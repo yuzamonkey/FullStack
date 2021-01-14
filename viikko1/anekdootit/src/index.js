@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-const CreateArray = (length) => {
+const createArray = (length) => {
   const array = []
   for (let i = 0; i < length; i++) {
     array[i] = 0
@@ -52,7 +52,7 @@ const App = (props) => {
   ]
 
   const [selected, setSelected] = useState(0)
-  const [votes, setVotes] = useState(CreateArray(anecdotes.length))
+  const [votes, setVotes] = useState(createArray(anecdotes.length))
   const [most, setMost] = useState(0)
 
   const vote = () => {
