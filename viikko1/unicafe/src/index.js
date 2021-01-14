@@ -25,14 +25,21 @@ const Statistics = ({ good, neutral, bad, all, average, percentage }) => {
   }
   return (
     <div>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {all}</p>
-      <p>average {average}</p>
-      <p>percentage {percentage} %</p>
+      <StatisticLine text="good" value={good} />
+      <StatisticLine text="neutral" value={neutral} />
+      <StatisticLine text="bad" value={bad} />
+      <StatisticLine text="all" value={all} />
+      <StatisticLine text="average" value={average} />
+      <StatisticLine text="percentage" value={percentage} />
     </div>
   )
+}
+
+const StatisticLine = ({ text, value }) => {
+  if (text === 'percentage') {
+    return <p>{text} {value} %</p>
+  }
+  return <p>{text} {value}</p>
 }
 
 const CountAverage = (array) => {
@@ -56,18 +63,18 @@ const App = () => {
 
 
   const increaseGood = () => {
-    const newGood = good+1
+    const newGood = good + 1
     const newAll = all.concat(1)
     setAverage(CountAverage(newAll))
-    setPercentage(newGood/newAll.length)
+    setPercentage(newGood / newAll.length)
     setGood(good + 1)
     setAll(newAll)
   }
   const increaseNeutral = () => {
-    const newNeutral = neutral+1
+    const newNeutral = neutral + 1
     const newAll = all.concat(0)
     setAverage(CountAverage(newAll))
-    setPercentage(good/newAll.length)
+    setPercentage(good / newAll.length)
     setNeutral(newNeutral)
     setAll(newAll)
   }
@@ -75,7 +82,7 @@ const App = () => {
     const newBad = bad + 1
     const newAll = all.concat(-1)
     setAverage(CountAverage(newAll))
-    setPercentage(good/newAll.length)
+    setPercentage(good / newAll.length)
     setBad(newBad)
     setAll(newAll)
   }
