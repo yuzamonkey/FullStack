@@ -37,9 +37,20 @@ const Statistics = ({ good, neutral, bad, all, average, percentage }) => {
 
 const StatisticLine = ({ text, value }) => {
   if (text === 'percentage') {
-    return <p>{text} {value} %</p>
+    return (
+      <tr>
+        <td>{text}</td>
+        <td>{value} %</td>
+      </tr>
+    )
   }
-  return <p>{text} {value}</p>
+
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+  )
 }
 
 const CountAverage = (array) => {
