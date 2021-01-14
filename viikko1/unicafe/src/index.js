@@ -16,6 +16,13 @@ const Button = ({ handleClick, text }) => {
 }
 
 const Statistics = ({ good, neutral, bad, all, average, percentage }) => {
+  if (all === 0) {
+    return (
+      <div>
+        <p>No feedback given</p>
+      </div>
+    )
+  }
   return (
     <div>
       <p>good {good}</p>
