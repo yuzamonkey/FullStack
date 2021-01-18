@@ -27,10 +27,8 @@ const Content = ({ parts }) => {
 }
 
 const Total = ({total}) => {
-  let sum = 0
-  for (let i = 0; i < total.length; i++) {
-    sum += total[i]
-  }
+  const reducer = (accumulator, currentValue) => accumulator + currentValue
+  let sum = total.reduce(reducer)
   return (
     <p><b>total of {sum} exercises</b></p>
   )
