@@ -20,7 +20,7 @@ const Content = ({ parts }) => {
   console.log("Content props ", parts)
   return (
     <div>
-      {parts.map(part => <p> {part.name} </p>)}
+      {parts.map(part => <p> {part.name} {part.exercises}</p>)}
     </div>
   )
 }
