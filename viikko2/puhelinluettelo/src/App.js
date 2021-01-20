@@ -1,20 +1,36 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Title from './components/Title'
 import ShowPersons from './components/ShowPersons'
 import Filter from './components/Filter'
 import Form from './components/Form'
+import axios from 'axios'
 
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+
+  const hook = () => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        // miksi tämä ei toimi tällaisenaan?? response.data.map(person => setPersons(persons.concat({name: person.name, number: person.number})))
+        const inputData = []
+        response.data.map(person => {
+          const personObject = {
+            name: person.name,
+            number: person.number
+          }
+          inputData.push(personObject)
+          return personObject
+        })
+        setPersons(persons.concat(inputData))
+      })
+  }
+  //eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(hook, [])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -48,9 +64,9 @@ const App = () => {
       <Title text="Phonebook" />
       <Filter handleFilterChange={handleFilterChange} />
       <Title text="add new person" />
-      <Form 
+      <Form
         addPerson={addPerson}
-        newName={newName} 
+        newName={newName}
         handleNameChange={handleNameChange}
         newNumber={newNumber}
         handleNumberChange={handleNumberChange} />
