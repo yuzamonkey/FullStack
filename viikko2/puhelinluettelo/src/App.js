@@ -16,7 +16,6 @@ const App = () => {
     personService
       .getAll()
       .then(response => {
-        console.log('resposedata', response.data)
         setPersons(response.data)
       })
   }
@@ -34,11 +33,28 @@ const App = () => {
       personService
         .create(personObject)
         .then(response => {
+          console.log('add person response data', response.data)
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
         })
     }
+  }
+
+  const removePerson = (event) => {
+    event.preventDefault()
+    const id = event.target.value
+    const person = persons.find(p => Number(p.id) === Number(id))
+    const returnvalue = window.confirm(`Delete ${person.name}`)
+    if (returnvalue) {
+      personService
+        .remove(id)
+        .then(response => {
+          const newPersons = persons.filter(person => Number(person.id) !== Number(id))
+          setPersons(newPersons)
+        })
+    }
+
   }
 
   const handleNameChange = (event) => {
@@ -65,7 +81,7 @@ const App = () => {
         newNumber={newNumber}
         handleNumberChange={handleNumberChange} />
       <Title text="Numbers" />
-      <ShowPersons persons={persons} filter={filter} />
+      <ShowPersons persons={persons} filter={filter} removePerson={removePerson} />
     </div>
   )
 
