@@ -5,9 +5,7 @@ const ShowPersons = ({ persons, filter, removePerson }) => {
                 {persons.map(person => {
                     if (person.name.toLowerCase().includes(filter.toLowerCase())) {
                         return <p key={person.id}>
-                            {person.name}
-                            {person.number}
-                            <button type="button" onClick={removePerson} value={person.id}>delete</button>
+                            {person.name} {person.number} <button type="button" onClick={removePerson} value={person.id}>delete</button>
                         </p>
                     } return <p></p>
                 })}
