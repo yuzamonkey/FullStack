@@ -3,7 +3,7 @@ import Title from './components/Title'
 import ShowPersons from './components/ShowPersons'
 import Filter from './components/Filter'
 import Form from './components/Form'
-import axios from 'axios'
+import personService from './services/persons'
 
 
 const App = () => {
@@ -13,23 +13,13 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
-        // miksi tämä ei toimi tällaisenaan?? response.data.map(person => setPersons(persons.concat({name: person.name, number: person.number})))
-        const inputData = []
-        response.data.map(person => {
-          const personObject = {
-            name: person.name,
-            number: person.number
-          }
-          inputData.push(personObject)
-          return personObject
-        })
-        setPersons(persons.concat(inputData))
+        console.log('resposedata', response.data)
+        setPersons(response.data)
       })
   }
-  //eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(hook, [])
 
   const addPerson = (event) => {
@@ -41,14 +31,13 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      axios
-        .post('http://localhost:3001/persons', personObject)
+      personService
+        .create(personObject)
         .then(response => {
-          console.log("axios.post response", response)
           setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('')
         })
-      setNewName('')
-      setNewNumber('')
     }
   }
 
