@@ -3,7 +3,10 @@ import Title from './components/Title'
 import ShowPersons from './components/ShowPersons'
 import Filter from './components/Filter'
 import Form from './components/Form'
+import SuccessNotification from './components/SuccessNotification'
 import personService from './services/persons'
+import './index.css'
+
 
 
 const App = () => {
@@ -11,6 +14,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
 
   const hook = () => {
     personService
@@ -36,6 +40,12 @@ const App = () => {
           .then(response => {
             const newPersons = persons.map(person => Number(updateperson.id) === Number(person.id) ? personObject : person)
             setPersons(newPersons)
+            setSuccessMessage(
+              `Number changed for ${newName}`
+            )
+            setTimeout(() => {
+              setSuccessMessage(null)
+            }, 5000)
           })
       }
     } else {
@@ -46,10 +56,15 @@ const App = () => {
       personService
         .create(personObject)
         .then(response => {
-          console.log('add person response data', response.data)
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
+          setSuccessMessage(
+            `${newName} added`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
         })
     }
   }
@@ -65,6 +80,12 @@ const App = () => {
         .then(response => {
           const newPersons = persons.filter(person => Number(person.id) !== Number(id))
           setPersons(newPersons)
+          setSuccessMessage(
+            `Deleted ${person.name}`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
         })
     }
 
@@ -85,6 +106,7 @@ const App = () => {
   return (
     <div>
       <Title text="Phonebook" />
+      <SuccessNotification message={successMessage} />
       <Filter handleFilterChange={handleFilterChange} />
       <Title text="add new person" />
       <Form
