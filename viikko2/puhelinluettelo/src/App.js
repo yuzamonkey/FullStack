@@ -4,6 +4,7 @@ import ShowPersons from './components/ShowPersons'
 import Filter from './components/Filter'
 import Form from './components/Form'
 import SuccessNotification from './components/SuccessNotification'
+import ErrorNotification from './components/ErrorNotification'
 import personService from './services/persons'
 import './index.css'
 
@@ -15,6 +16,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const hook = () => {
     personService
@@ -38,6 +40,7 @@ const App = () => {
         personService
           .update(updateperson.id, personObject)
           .then(response => {
+            console.log('update response', response)
             const newPersons = persons.map(person => Number(updateperson.id) === Number(person.id) ? personObject : person)
             setPersons(newPersons)
             setSuccessMessage(
@@ -47,6 +50,16 @@ const App = () => {
               setSuccessMessage(null)
             }, 5000)
           })
+          .catch(error => {
+            const newPersons = persons.filter(person => person.name !== newName)
+            setPersons(newPersons)
+            setErrorMessage(`Information of ${newName} has already removed from server`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+          })
+          setNewName('')
+          setNewNumber('')
       }
     } else {
       const personObject = {
@@ -80,6 +93,8 @@ const App = () => {
         .then(response => {
           const newPersons = persons.filter(person => Number(person.id) !== Number(id))
           setPersons(newPersons)
+          setNewName('')
+          setNewNumber('')
           setSuccessMessage(
             `Deleted ${person.name}`
           )
@@ -107,6 +122,7 @@ const App = () => {
     <div>
       <Title text="Phonebook" />
       <SuccessNotification message={successMessage} />
+      <ErrorNotification message={errorMessage} />
       <Filter handleFilterChange={handleFilterChange} />
       <Title text="add new person" />
       <Form
