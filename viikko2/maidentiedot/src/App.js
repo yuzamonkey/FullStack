@@ -6,20 +6,18 @@ import ShowCountries from './components/ShowCountries'
 const App = () => {
   const [data, setData] = useState([])
   const [filter, setFilter] = useState('')
+  const url = "https://restcountries.eu/rest/v2/all"
 
   const hook = () => {
-    console.log("hook method")
     axios
-      .get("https://restcountries.eu/rest/v2/all")
+      .get(url)
       .then(response => {
-        console.log('promise fulfilled', response.data)
         setData(response.data)
       })
   }
   useEffect(hook, [])
 
   const handleFilterChange = (event) => {
-    console.log(event.target.value)
     setFilter(event.target.value)
   }
 
