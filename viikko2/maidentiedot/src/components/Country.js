@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const ShowCountryInfo = ({ country }) => {
+export const Country = ({ country }) => {
   const [weatherData, setWeatherData] = useState({})
   const api_key = process.env.REACT_APP_API_KEY
-
+  const url = ''
   const hook = () => {
     axios
       .get(url)
@@ -33,5 +33,3 @@ const ShowCountryInfo = ({ country }) => {
     </div>
   )
 }
-
-export default ShowCountryInfo

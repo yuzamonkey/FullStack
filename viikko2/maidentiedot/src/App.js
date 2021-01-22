@@ -1,30 +1,29 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Filter from './components/Filter'
-import ShowCountries from './components/ShowCountries'
+import { CountryList } from './components/CountryList'
 
 const App = () => {
-  const [data, setData] = useState([])
-  const [filter, setFilter] = useState('')
-  const url = "https://restcountries.eu/rest/v2/all"
+  const [allCountries, setAllCountries] = useState([])
+  const [visibleCountries, setVisibleCountries] = useState([])
 
-  const hook = () => {
+  const url = "https://restcountries.eu/rest/v2/all"
+  useEffect(() => {
     axios
       .get(url)
       .then(response => {
-        setData(response.data)
+        setAllCountries(response.data)
       })
-  }
-  useEffect(hook, [])
+  }, [])
 
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value)
+  const updateVisibleCountriesBySearchTerm = (searchTerm) => {
+    setVisibleCountries(allCountries.filter(country => country.name.toLowerCase().includes(searchTerm.toLowerCase())))
   }
 
   return (
     <div>
-      <Filter handleFilterChange={handleFilterChange} />
-      <ShowCountries data={data} filter={filter} />
+      <Filter onFilterChange={searchTerm => updateVisibleCountriesBySearchTerm(searchTerm)} />
+      <CountryList countries={visibleCountries} onSelect={selectedCountry => setVisibleCountries([selectedCountry])}/>
     </div>
   );
 }
