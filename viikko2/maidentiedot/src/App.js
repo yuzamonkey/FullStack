@@ -16,13 +16,13 @@ const App = () => {
       })
   }, [])
 
-  const updateVisibleCountriesBySearchTerm = (searchTerm) => {
+  const updateVisibleCountries = (searchTerm) => {
     setVisibleCountries(allCountries.filter(country => country.name.toLowerCase().includes(searchTerm.toLowerCase())))
   }
 
   return (
     <div>
-      <Filter onFilterChange={searchTerm => updateVisibleCountriesBySearchTerm(searchTerm)} />
+      <Filter onFilterChange={searchTerm => updateVisibleCountries(searchTerm)} />
       <CountryList countries={visibleCountries} onSelect={selectedCountry => setVisibleCountries([selectedCountry])}/>
     </div>
   );

@@ -3,7 +3,6 @@ import axios from 'axios'
 
 export const Country = ({ country }) => {
   const [weatherData, setWeatherData] = useState(undefined)
-
   const api_key = process.env.REACT_APP_API_KEY
   const url = `http://api.weatherstack.com/current?access_key=${api_key}&query=${country.capital}`
   useEffect(() => {
