@@ -49,7 +49,6 @@ app.get('/api/persons/:id', (request, response) => {
 const generateId = () => {
   let id = Math.floor(Math.random() * 99)
   const ids = persons.map(person => Number(person.id))
-  console.log(ids)
   let foundSameId = true
   while (foundSameId) {
     if (ids.includes(id)) {
@@ -63,17 +62,21 @@ const generateId = () => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
-  if (!body) {
-    return response.status(400).json({error: 'content missing'})
+  const names = persons.map(person => person.name)
+  if (!body.name || !body.number) {
+    return response.status(400).json({ error: 'either name or number is missing' })
   }
-
-  const person = {
-    id: generateId(),
-    name: body.name,
-    number: body.number
+  else if (names.includes(body.name)) {
+    return response.status(400).json({ error: 'name must be unique' })
+  } else {
+    const person = {
+      id: generateId(),
+      name: body.name,
+      number: body.number
+    }
+    persons = persons.concat(persons)
+    response.json(person)
   }
-  persons = persons.concat(persons)
-  response.json(person)
 })
 
 app.delete('/api/persons/:id', (request, response) => {
