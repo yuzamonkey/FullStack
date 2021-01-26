@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+app.use(express.json())
 
 let persons = [
   {
@@ -43,6 +44,36 @@ app.get('/api/persons/:id', (request, response) => {
   } else {
     response.status(404).end()
   }
+})
+
+const generateId = () => {
+  let id = Math.floor(Math.random() * 99)
+  const ids = persons.map(person => Number(person.id))
+  console.log(ids)
+  let foundSameId = true
+  while (foundSameId) {
+    if (ids.includes(id)) {
+      id = Math.floor(Math.random() * 99)
+    } else {
+      foundSameId = false
+    }
+  }
+  return id
+}
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+  if (!body) {
+    return response.status(400).json({error: 'content missing'})
+  }
+
+  const person = {
+    id: generateId(),
+    name: body.name,
+    number: body.number
+  }
+  persons = persons.concat(persons)
+  response.json(person)
 })
 
 app.delete('/api/persons/:id', (request, response) => {
