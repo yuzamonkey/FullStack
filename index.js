@@ -4,6 +4,8 @@ const morgan = require('morgan')
 morgan.token('data', function(req, res) {return JSON.stringify(req.body)})
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 app.use(express.json())
+const cors = require('cors')
+app.use(cors())
 
 
 
@@ -79,7 +81,7 @@ app.post('/api/persons', (request, response) => {
       name: body.name,
       number: body.number
     }
-    persons = persons.concat(persons)
+    persons = persons.concat(person)
     response.json(person)
   }
 })
