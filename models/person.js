@@ -1,4 +1,3 @@
-//MongoDB3.13, muista katsoa ettei salasanoja talletu committeihin
 const mongoose = require('mongoose')
 const url = process.env.MONGODB_URI
 
@@ -23,4 +22,3 @@ personSchema.set('toJSON', {
   }
 })
 module.exports = mongoose.model('Person', personSchema)
-//

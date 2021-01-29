@@ -87,6 +87,7 @@ app.post('/api/persons', (request, response) => {
   })
   person.save().then(savedPerson => {
     response.json(savedPerson)
+    console.log("SAVED PERSON", savedPerson)
   })
   // const body = request.body
   // const names = persons.map(person => person.name)
@@ -106,10 +107,17 @@ app.post('/api/persons', (request, response) => {
   // }
 })
 
-app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  persons = persons.filter(person => persons.id !== id)
-  response.status(204).end()
+app.delete('/api/persons/:id', (request, response, next) => {
+  console.log("APP.DELETE CALLED")
+  Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+      console.log("RESULT", result)
+    })
+    .catch(error => next(error))
+  // const id = Number(request.params.id)
+  // persons = persons.filter(person => persons.id !== id)
+  // response.status(204).end()
 })
 
 const PORT = process.env.PORT
