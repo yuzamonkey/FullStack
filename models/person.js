@@ -10,10 +10,18 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFind
     console.log('error connecting to MongoDB', error.message)
   })
 
+
+const uniqueValidator = require('mongoose-unique-validator')
+
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String
+  name: {
+    type: String,
+    unique: true
+  }
 })
+personSchema.plugin(uniqueValidator)
+
+
 personSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
