@@ -10,31 +10,6 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.static('build'))
 
-
-
-// let persons = [
-//   {
-//     id: 1,
-//     name: "Arto Hellas",
-//     number: "040-123456"
-//   },
-//   {
-//     id: 2,
-//     name: "Ada Lovelace",
-//     number: "39-44-532523"
-//   },
-//   {
-//     id: 3,
-//     name: "Dan Abramov",
-//     number: "12-43-234345"
-//   },
-//   {
-//     id: 4,
-//     name: "Mary Poppendick",
-//     number: "39-23-6423122"
-//   }
-// ]
-
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
@@ -52,29 +27,7 @@ app.get('/api/persons/:id', (request, response) => {
   Person.findById(request.params.id).then(person => {
     response.json(person)
   })
-
-  // const id = Number(request.params.id)
-  // const person = persons.find(person => person.id === id)
-  // if (person) {
-  //   response.json(person)
-  // } else {
-  //   response.status(404).end()
-  // }
 })
-
-const generateId = () => {
-  let id = Math.floor(Math.random() * 99)
-  const ids = persons.map(person => Number(person.id))
-  let foundSameId = true
-  while (foundSameId) {
-    if (ids.includes(id)) {
-      id = Math.floor(Math.random() * 99)
-    } else {
-      foundSameId = false
-    }
-  }
-  return id
-}
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
@@ -87,37 +40,18 @@ app.post('/api/persons', (request, response) => {
   })
   person.save().then(savedPerson => {
     response.json(savedPerson)
-    console.log("SAVED PERSON", savedPerson)
+    //console.log("SAVED PERSON", savedPerson)
   })
-  // const body = request.body
-  // const names = persons.map(person => person.name)
-  // if (!body.name || !body.number) {
-  //   return response.status(400).json({ error: 'either name or number is missing' })
-  // }
-  // else if (names.includes(body.name)) {
-  //   return response.status(400).json({ error: 'name must be unique' })
-  // } else {
-  //   const person = {
-  //     id: generateId(),
-  //     name: body.name,
-  //     number: body.number
-  //   }
-  //   persons = persons.concat(person)
-  //   response.json(person)
-  // }
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
   console.log("APP.DELETE CALLED")
   Person.findByIdAndRemove(request.params.id)
     .then(result => {
+      console.log("DELETE RESULT", result)
       response.status(204).end()
-      console.log("RESULT", result)
     })
     .catch(error => next(error))
-  // const id = Number(request.params.id)
-  // persons = persons.filter(person => persons.id !== id)
-  // response.status(204).end()
 })
 
 const PORT = process.env.PORT

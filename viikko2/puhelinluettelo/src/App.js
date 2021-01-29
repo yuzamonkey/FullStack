@@ -18,19 +18,18 @@ const App = () => {
   const [successMessage, setSuccessMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
-  const hook = () => {
+  useEffect(() => {
     personService
       .getAll()
       .then(response => {
         setPersons(response.data)
       })
-  }
-  useEffect(hook, [])
+  }, [])
 
   const addPerson = (event) => {
     event.preventDefault()
     if (persons.map(person => person.name).includes(newName)) {
-    const replace = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+      const replace = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
       if (replace) {
         const updateperson = persons.find(person => person.name === newName)
         const personObject = {
@@ -58,8 +57,8 @@ const App = () => {
               setErrorMessage(null)
             }, 5000)
           })
-          setNewName('')
-          setNewNumber('')
+        setNewName('')
+        setNewNumber('')
       }
     } else {
       const personObject = {
@@ -85,13 +84,13 @@ const App = () => {
   const removePerson = (event) => {
     event.preventDefault()
     const id = event.target.value
-    const person = persons.find(p => Number(p.id) === Number(id))
+    const person = persons.find(p => (p.id) === (id))
     const returnvalue = window.confirm(`Delete ${person.name}`)
     if (returnvalue) {
       personService
         .remove(id)
         .then(response => {
-          const newPersons = persons.filter(person => Number(person.id) !== Number(id))
+          const newPersons = persons.filter(person => (person.id) !== (id))
           setPersons(newPersons)
           setNewName('')
           setNewNumber('')
