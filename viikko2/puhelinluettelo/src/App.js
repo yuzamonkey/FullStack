@@ -40,7 +40,7 @@ const App = () => {
           .update(updateperson.id, personObject)
           .then(response => {
             console.log('update response', response)
-            const newPersons = persons.map(person => Number(updateperson.id) === Number(person.id) ? personObject : person)
+            const newPersons = persons.map(person => (updateperson.id) === (person.id) ? personObject : person)
             setPersons(newPersons)
             setSuccessMessage(
               `Number changed for ${newName}`

@@ -3,38 +3,28 @@ const express = require('express')
 const app = express()
 app.use(express.static('build'))
 app.use(express.json())
-//app.use(logger)
 const Person = require('./models/person')
 const morgan = require('morgan')
-morgan.token('data', function(req, res) {return JSON.stringify(req.body)})
+morgan.token('data', function (req, res) { return JSON.stringify(req.body) })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
+
 const cors = require('cors')
 app.use(cors())
+
 
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
 })
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
-app.use(unknownEndpoint)
-
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id'})
-  }
-  next(error)
-}
-app.use(errorHandler)
 
 app.get('/info', (request, response) => {
-  const firstLine = `Phonebook has info for ${persons.length} people`
-  const time = new Date()
-  const content = `<p>${firstLine}</p> <p>${time}</p>`
-  response.send(content)
+  Person.find({}).then(persons => {
+    const firstLine = `Phonebook has info for ${persons.length} people`
+    const time = new Date()
+    const content = `<p>${firstLine}</p> <p>${time}</p>`
+    response.send(content)
+  })
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -45,7 +35,9 @@ app.get('/api/persons/:id', (request, response, next) => {
       response.status(404).end()
     }
   })
-  .catch(error => next(error))
+  .catch(error => {
+    next(error)
+  }) 
 })
 
 app.post('/api/persons', (request, response) => {
@@ -62,13 +54,37 @@ app.post('/api/persons', (request, response) => {
   })
 })
 
+app.put('/api/persons/:id', (request, response, next) => {
+  const update = { number: request.body.number }
+  Person.findByIdAndUpdate(request.params.id, update)
+    .then(result => {
+      response.status(204).end()
+    })
+})
+
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
     .then(result => {
+      console.log("DELETE RESULT", result)
       response.status(204).end()
     })
     .catch(error => next(error))
 })
+
+//error handle
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+  next(error)
+}
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
