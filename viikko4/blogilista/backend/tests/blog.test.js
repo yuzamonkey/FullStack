@@ -5,9 +5,19 @@ const app = require('../app')
 const api = supertest(app)
 
 describe('correct number of blogs', () => {
-    test('return 200', async () => {
+    test('return right number of blogs', async () => {
         const response = await api.get('/api/blogs')
         expect(response.body).toHaveLength(3)
+    })
+})
+
+describe('check that all blogs have id-field called "id"', () => {
+    test('id is called id, not _id', async () => {
+        const response = await api.get('/api/blogs')
+        const body = response.body
+        body.forEach(item => {
+            expect(item.id).toBeDefined()
+        })
     })
 })
 
