@@ -1,3 +1,60 @@
+const mongoose = require('mongoose')
+const supertest = require('supertest')
+const app = require('../app')
+
+const api = supertest(app)
+
+describe('correct number of blogs', () => {
+    test('return 200', async () => {
+        const response = await api.get('/api/blogs')
+        expect(response.body).toHaveLength(3)
+    })
+})
+
+afterAll(() => {
+    mongoose.connection.close()
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 const listHelper = require('../utils/list_helper')
 
 const blog = []
@@ -71,3 +128,4 @@ describe('get favorite blog', () => {
     })
 })
 
+*/
