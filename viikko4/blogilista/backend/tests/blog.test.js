@@ -21,6 +21,20 @@ describe('check that all blogs have id-field called "id"', () => {
     })
 })
 
+describe('add blog increases amount of blogs by one', () => {
+    test('add blog', async () => {
+        const get = await api.get('/api/blogs')
+        const length = get.body.length
+        const response = await api.post('/api/blogs')
+        expect(response.body.title).toBeDefined()
+        expect(response.body.url).toBeDefined()
+        expect(response.body.likes).toBeDefined()
+        expect(response.body.id).toBeDefined()
+        const getAfter = await api.get('/api/blogs')
+        expect(getAfter.body.length).toBe(length+1)
+    })
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
