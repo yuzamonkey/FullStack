@@ -35,6 +35,25 @@ describe('add blog increases amount of blogs by one', () => {
     })
 })
 
+//THIS DOES NOT MAKE SENSE 4.jotain
+describe('if no likes, put value 0', () => {
+    test('no likes in post-method', async () => {
+        const response = await api.post('/api/blogs')
+        if (response.body.likes === undefined) {
+            console.log("UNDEF")
+            expect(response.body.likes).toBe(0)
+        } 
+    })
+})
+//
+
+describe('if no title or url, 400 Bad Request', () => {
+    test('response 400 for invalid request', async () => {
+        await api.post('/api/blogs').expect(400)
+
+    })
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })

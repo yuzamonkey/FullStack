@@ -5,6 +5,7 @@ const Blog = require('../models/blog')
 //Määriteltyä routea '/' käytetään,
 //jos polun alkuosa on /api/blogs.
 //Siksi blogsRouter-olion sisällä riittää käyttää loppuosia
+
 blogsRouter.get('/', (request, response) => {
     Blog
         .find({})
@@ -15,6 +16,15 @@ blogsRouter.get('/', (request, response) => {
 
 blogsRouter.post('/', (request, response) => {
     const blog = new Blog(request.body)
+    if (blog.title === undefined) {
+        response.status(400)
+    }
+    if (blog.url === undefined) {
+        response.status(400)
+    }
+    if (blog.likes === undefined) {
+        blog.likes = 0
+    }
     blog
         .save()
         .then(result => {
