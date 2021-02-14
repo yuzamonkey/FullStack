@@ -15,6 +15,12 @@ const addBlogPost = async () => {
         .send(blogObject)
     return response.body.id
 }
+const getBlogPost = async (id) => {
+    console.log("GET BLOGPOST BY ID === ", id)
+    const blog = await api.get(`/api/blogs/${id}`)
+    console.log("BLOG from test", blog)
+    return blog
+}
 const getBlogPostCount = async () => {
     const get = await api.get('/api/blogs')
     const count = get.body.length
@@ -22,6 +28,9 @@ const getBlogPostCount = async () => {
 }
 const deleteBlogPost = async (id) => {
     await api.delete(`/api/blogs/${id}`)
+}
+const updateLikes = async (id, newLikes) => {
+    await api.put(`/api/blogs/${id}`).send({likes: newLikes})
 }
 
 describe('correct number of blogs', () => {
@@ -72,8 +81,6 @@ describe('if no title or url, 400 Bad Request', () => {
     })
 })
 
-
-
 // 4.13 ok
 describe('delete item', () => {
     test('deleting item by id', async () => {
@@ -82,6 +89,22 @@ describe('delete item', () => {
         await deleteBlogPost(id)
         const countAfter = await getBlogPostCount()
         expect(countAfter).toEqual(countBefore - 1)
+    })
+})
+
+//4.14 kesken
+describe('edit likes of blog', () => {
+    test('editing updates likes', async () => {
+        //addBlog
+        const id = await addBlogPost()
+        //getLikes
+        const likesBefore = await getBlogPost(id).likes
+        console.log("LIKES BEFORE", likesBefore)
+        //updateLikes+10
+        await updateLikes(id, likesBefore+10)
+        //getLikes
+        const likesAfter = await getBlogPost(id).likes
+        expect(likesAfter).toEqual(likesBefore+10)
     })
 })
 

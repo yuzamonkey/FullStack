@@ -14,19 +14,25 @@ usersRouter.post('/', async (request, response, next) => {
     if (body.password.length < 3) {
         console.log("TOO SHORT PASSWORD")
         //KESKEN
-        next(errorHandler)
+        const error = {
+            name: 'ValidationError',
+            message: 'Too short password'
+        }
+        next(error)
+    } else {
+        const saltRounds = 10
+        const passwordHash = await bcrypt.hash(body.password, saltRounds)
+
+        const user = new User({
+            username: body.username,
+            name: body.name,
+            passwordHash,
+        })
+
+        const savedUser = await user.save()
+        response.json(savedUser)
     }
-    const saltRounds = 10
-    const passwordHash = await bcrypt.hash(body.password, saltRounds)
-
-    const user = new User({
-        username: body.username,
-        name: body.name,
-        passwordHash,
-    })
-
-    const savedUser = await user.save()
-    response.json(savedUser)
 })
+
 
 module.exports = usersRouter

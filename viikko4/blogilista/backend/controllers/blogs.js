@@ -7,6 +7,13 @@ const User = require('../models/user')
 //jos polun alkuosa on /api/blogs.
 //Siksi blogsRouter-olion sisällä riittää käyttää loppuosia
 
+blogsRouter.get('/:id', async (request, response) => {
+    const blog = await Blog.findById(request.params.id)
+    console.log("BLOG", blog)
+    console.log("LIKESTYPE", typeof(blog.likes))
+    response.json(blog.toJSON())
+})
+
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({}).populate('user')
     response.json(blogs.map(b => b.toJSON()))
@@ -32,6 +39,15 @@ blogsRouter.post('/', async (request, response, next) => {
         response.json(savedBlog.toJSON())
     }
 })
+
+blogsRouter.put('/:id', async (request, response, next) => {
+    const editableBlog = await Blog.findById(request.params.id)
+    editableBlog.likes = request.body.likes
+    await Blog.findByIdAndUpdate(request.params.id, editableBlog)
+    response.json(editableBlog.toJSON())
+})
+
+
 
 blogsRouter.delete('/:id', async (request, response, next) => {
     console.log(request.params.id)
