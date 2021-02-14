@@ -1,7 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
-const jwt = require('jsonwebtoken')
 //routet (/api/blogs) määritelty sovelluslogiikassa app.js. 
 //Määriteltyä routea '/' käytetään,
 //jos polun alkuosa on /api/blogs.
@@ -24,7 +23,7 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response, next) => {
     const body = request.body
-    
+
     if (!body.title || !body.url) {
         const error = {
             name: 'ValidationError',
@@ -33,25 +32,22 @@ blogsRouter.post('/', async (request, response, next) => {
         next(error)
     } else {
         //4.19
-        //const token = getTokenFrom(request)
-        const decodedToken = jwt.verify(request.token, process.env.SECRET) //palauttaa kentät username ja id
-        if (!request.token || !decodedToken.id) {
-            return response.status(401).json({ error: 'token missing or invalid' })
+        if (request.authenticatedUser !== undefined) {
+            const blog = new Blog({
+                title: body.title,
+                author: body.author,
+                url: body.url,
+                likes: body.likes || 0,
+                user: request.authenticatedUser._id
+            })
+            const savedBlog = await blog.save()
+            request.authenticatedUser.blogs = request.authenticatedUser.blogs.concat(savedBlog._id)
+            await request.authenticatedUser.save()
+
+            response.json(savedBlog.toJSON())
+        } else {
+            response.status(401).json({ error: 'no authentication' })
         }
-        const user = await User.findById(decodedToken.id)
-
-        const blog = new Blog({
-            title: body.title,
-            author: body.author,
-            url: body.url,
-            likes: body.likes || 0,
-            user: user._id
-        })
-        const savedBlog = await blog.save()
-        user.blogs = user.blogs.concat(savedBlog._id)
-        await user.save()
-
-        response.json(savedBlog.toJSON())
     }
 })
 
