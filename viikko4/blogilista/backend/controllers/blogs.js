@@ -1,4 +1,5 @@
 const blogsRouter = require('express').Router()
+const { response } = require('express')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 //routet (/api/blogs) määritelty sovelluslogiikassa app.js. 
@@ -58,13 +59,24 @@ blogsRouter.put('/:id', async (request, response, next) => {
     response.json(editableBlog.toJSON())
 })
 
+const userIsLoggedIn = (request, user) => {
+    if (request.authenticatedUser) {
+        return (user.toString() === request.authenticatedUser._id.toString())
+    } else {
+        return false
+    }
+}
 
 
 blogsRouter.delete('/:id', async (request, response, next) => {
     console.log(request.params.id)
-    const result = await Blog.findByIdAndDelete(request.params.id)
-    console.log("RESULT", result)
-    response.json({})
+    const blog = await Blog.findById(request.params.id)
+    if (userIsLoggedIn(request, blog.user)) {
+        await blog.delete()
+        response.json({})
+    } else {
+        response.status(401).json({ error: 'not authenticated to delete blog' })    
+    }
 })
 
 module.exports = blogsRouter
