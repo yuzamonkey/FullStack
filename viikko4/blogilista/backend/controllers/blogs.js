@@ -7,20 +7,11 @@ const jwt = require('jsonwebtoken')
 //jos polun alkuosa on /api/blogs.
 //Siksi blogsRouter-olion sisällä riittää käyttää loppuosia
 
-const getTokenFrom = request => {
-    const prefix = 'bearer '
-    const authorization = request.get('authorization')
-    if (authorization && authorization.toLowerCase().startsWith(prefix)) {
-        return authorization.substring(prefix.length)
-    } else {
-        return null
-    }
-}
 
 
 blogsRouter.get('/:id', async (request, response) => {
     const blog = await Blog.findById(request.params.id)
-   
+
     console.log("BLOG", blog)
     console.log("LIKESTYPE", typeof (blog.likes))
     response.json(blog.toJSON())
@@ -42,9 +33,9 @@ blogsRouter.post('/', async (request, response, next) => {
         next(error)
     } else {
         //4.19
-        const token = getTokenFrom(request)
-        const decodedToken = jwt.verify(token, process.env.SECRET) //palauttaa kentät username ja id
-        if (!token || !decodedToken.id) {
+        //const token = getTokenFrom(request)
+        const decodedToken = jwt.verify(request.token, process.env.SECRET) //palauttaa kentät username ja id
+        if (!request.token || !decodedToken.id) {
             return response.status(401).json({ error: 'token missing or invalid' })
         }
         const user = await User.findById(decodedToken.id)
