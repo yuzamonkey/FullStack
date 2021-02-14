@@ -4,171 +4,89 @@ const app = require('../app')
 
 const api = supertest(app)
 
+const addBlogPost = async () => {
+    const blogObject = {
+        title: "testi410sdkfjhsdlkfh",
+        url: "www.sfogijdfgjs.com",
+        likes: 10,
+    }
+    const response = await api
+        .post('/api/blogs')
+        .send(blogObject)
+    return response.body.id
+}
+const getBlogPostCount = async () => {
+    const get = await api.get('/api/blogs')
+    const count = get.body.length
+    return count
+}
+const deleteBlogPost = async (id) => {
+    await api.delete(`/api/blogs/${id}`)
+}
+
 describe('correct number of blogs', () => {
     test('return right number of blogs', async () => {
         const response = await api.get('/api/blogs')
         expect(response.body).toHaveLength(3)
     })
 })
-
+//4.9. OK
 describe('check that all blogs have id-field called "id"', () => {
     test('id is called id, not _id', async () => {
         const response = await api.get('/api/blogs')
         const body = response.body
         body.forEach(item => {
+            console.log("ITEM", item)
             expect(item.id).toBeDefined()
         })
     })
 })
-
+//4.10 OK
 describe('add blog increases amount of blogs by one', () => {
     test('add blog', async () => {
-        const get = await api.get('/api/blogs')
-        const length = get.body.length
-        const response = await api.post('/api/blogs')
+        const length = getBlogPostCount()
+        addBlogPost()
         expect(response.body.title).toBeDefined()
         expect(response.body.url).toBeDefined()
         expect(response.body.likes).toBeDefined()
         expect(response.body.id).toBeDefined()
-        const getAfter = await api.get('/api/blogs')
-        expect(getAfter.body.length).toBe(length+1)
+        const after = await api.get('/api/blogs')
+        expect(after.body.length).toBe(length + 1)
     })
 })
 
-//THIS DOES NOT MAKE SENSE 4.jotain
+// 4.11 ok
 describe('if no likes, put value 0', () => {
     test('no likes in post-method', async () => {
         const response = await api.post('/api/blogs')
         if (response.body.likes === undefined) {
-            console.log("UNDEF")
             expect(response.body.likes).toBe(0)
-        } 
+        }
     })
 })
-//
 
+// 4.12 ok
 describe('if no title or url, 400 Bad Request', () => {
     test('response 400 for invalid request', async () => {
         await api.post('/api/blogs').expect(400)
-
     })
 })
 
-afterAll(() => {
-    mongoose.connection.close()
-})
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-const listHelper = require('../utils/list_helper')
-
-const blog = []
-const listWithOneBlog = [
-    {
-        _id: '5a422aa71b54a676234d17f8',
-        title: 'Go To Statement Considered Harmful',
-        author: 'Edsger W. Dijkstra',
-        url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-        likes: 5,
-        __v: 0
-    }
-]
-const blogs = [
-    {
-        _id: "5a422a851b54a676234d17f7", title: "React patterns", author: "Michael Chan", url: "https://reactpatterns.com/", likes: 7, __v: 0
-    },
-    {
-        _id: "5a422aa71b54a676234d17f8", title: "Go To Statement Considered Harmful", author: "Edsger W. Dijkstra", url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html", likes: 5, __v: 0
-    },
-    {
-        _id: "5a422b3a1b54a676234d17f9", title: "Canonical string reduction", author: "Edsger W. Dijkstra", url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html", likes: 12, __v: 0
-    },
-    {
-        _id: "5a422b891b54a676234d17fa", title: "First class tests", author: "Robert C. Martin", url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll", likes: 10, __v: 0
-    },
-    {
-        _id: "5a422ba71b54a676234d17fb", title: "TDD harms architecture", author: "Robert C. Martin", url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html", likes: 0, __v: 0
-    },
-    {
-        _id: "5a422bc61b54a676234d17fc", title: "Type wars", author: "Robert C. Martin", url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html", likes: 2, __v: 0
-    }
-]
-
-describe('return one', () => {
-    test('dummy return one', () => {
-        const blogs = []
-        const result = listHelper.dummy(blogs)
-        expect(result).toBe(1)
+// 4.13 ok
+describe('delete item', () => {
+    test('deleting item by id', async () => {
+        const id = await addBlogPost()
+        const countBefore = await getBlogPostCount()
+        await deleteBlogPost(id)
+        const countAfter = await getBlogPostCount()
+        expect(countAfter).toEqual(countBefore - 1)
     })
 })
 
-describe('total likes', () => {
-
-    test('return total likes', () => {
-        const result1 = listHelper.totalLikes(blog)
-        expect(result1).toBe(0)
-        const result2 = listHelper.totalLikes(listWithOneBlog)
-        expect(result2).toBe(5)
-        const result3 = listHelper.totalLikes(blogs)
-        expect(result3).toBe(36)
-    })
+afterAll(async () => {
+    await mongoose.connection.close()
 })
 
-describe('get favorite blog', () => {
-    test('favorite blog', () => {
-        const result1 = listHelper.favoriteBlog(blog)
-        expect(result1).toEqual(undefined)
-        const result2 = listHelper.favoriteBlog(listWithOneBlog)
-        expect(result2).toEqual({
-            title: "Go To Statement Considered Harmful",
-            author: "Edsger W. Dijkstra",
-            likes: 5
-        })
-        const result3 = listHelper.favoriteBlog(blogs)
-        expect(result3).toEqual({
-            title: "Canonical string reduction",
-            author: "Edsger W. Dijkstra",
-            likes: 12
-          })
-    })
-})
 
-*/
