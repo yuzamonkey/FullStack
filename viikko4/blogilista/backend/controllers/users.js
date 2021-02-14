@@ -5,7 +5,7 @@ const errorHandler = require('../utils/middleware')
 
 
 usersRouter.get('/', async (request, response) => {
-    const users = await User.find({})
+    const users = await User.find({}).populate('blogs')
     response.json(users.map(u => u.toJSON()))
 })
 
@@ -13,7 +13,6 @@ usersRouter.post('/', async (request, response, next) => {
     const body = request.body
     if (body.password.length < 3) {
         console.log("TOO SHORT PASSWORD")
-        //KESKEN
         const error = {
             name: 'ValidationError',
             message: 'Too short password'

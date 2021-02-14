@@ -28,13 +28,17 @@ blogsRouter.post('/', async (request, response, next) => {
         }
         next(error)
     } else {
+        const user = await User.findById('6026356b4a9cbf4c1a273a18')
         const blog = new Blog({
             title: body.title,
-            author: body.title,
+            author: body.author,
             url: body.url,
-            likes: body.likes || 0
+            likes: body.likes || 0,
+            user: user._id
         })
         const savedBlog = await blog.save()
+        user.blogs = user.blogs.concat(savedBlog._id)
+        await user.save()
 
         response.json(savedBlog.toJSON())
     }
