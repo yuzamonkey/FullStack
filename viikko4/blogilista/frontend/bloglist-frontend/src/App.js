@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
@@ -21,28 +20,14 @@ const App = () => {
         )
     }, [])
 
-    const content = () => {
-        if (user === null) {
-            return (
-                <div>
-                    <h2>Log in to app</h2>
-
-                </div>
-            )
-        } else {
-            return (
-                <div>
-                    <h2>Blogs</h2>
-                    <p>Logged in as {user.username}</p>
-                    <br></br>
-                    {user !== null && blogs.map(blog =>
-                        <Blog key={blog.id} blog={blog} />
-                    )}
-                </div>
-            )
+    useEffect(() => {
+        const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+        if (loggedUserJSON) {
+            const user = JSON.parse(loggedUserJSON)
+            setUser(user)
+            blogService.setToken(user.token)
         }
-
-    }
+    }, [])
 
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -52,6 +37,10 @@ const App = () => {
             const user = await loginService.login({
                 username, password,
             })
+            window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+            console.log(window.localStorage.getItem('loggedBlogappUser'))
+            blogService.setToken(user.token)
+
             setUser(user)
             setUsername('')
             setPassword('')
@@ -61,6 +50,18 @@ const App = () => {
                 setErrorMessage(null)
             }, 5000)
         }
+    }
+
+    const handleLogout = async (event) => {
+        event.preventDefault()
+        console.log("LOGGIN OUT")
+        try {
+            window.localStorage.clear()
+            blogService.deleteToken()
+        } catch (exception) {
+            console.log("SOMETHING WRONG", exception)
+        }
+
     }
 
     return (
@@ -74,7 +75,7 @@ const App = () => {
                 setPassword={setPassword}
                 errorMessage={errorMessage}
                 />}
-            {user !== null && <LoggedInInfo user={user}/> }
+            {user !== null && <LoggedInInfo user={user} handleLogout={handleLogout}/> }
             {user !== null && <BlogList blogs={blogs}/> }
 
         </div>

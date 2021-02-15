@@ -1,8 +1,11 @@
 import React from 'react'
 
-const LoggedInInfo = ({user}) => {
+const LoggedInInfo = ({user, handleLogout}) => {
     return (
-        <p>User {user.name} is logged in</p>
+        <p>User {user.name} is logged in
+        <button onClick={handleLogout}>logout</button>
+        </p>
+
     )
 }
 
