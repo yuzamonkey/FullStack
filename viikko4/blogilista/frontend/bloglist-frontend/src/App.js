@@ -3,10 +3,15 @@ import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
 import LoggedInInfo from './components/LoggedInInfo'
+import CreateBlog from './components/CreateBlog'
 import loginService from './services/login'
 
 const App = () => {
     const [blogs, setBlogs] = useState([])
+
+    const [newTitle, setNewTitle] = useState('')
+    const [newAuthor, setNewAuthor] = useState('')
+    const [newUrl, setNewUrl] = useState('')
 
     const [errorMessage, setErrorMessage] = useState(null)
 
@@ -61,9 +66,23 @@ const App = () => {
         } catch (exception) {
             console.log("SOMETHING WRONG", exception)
         }
-
     }
 
+    const addNewBlog = (event) => {
+        event.preventDefault()
+        console.log(newTitle, newAuthor, newUrl)
+        const blog = {
+            title: newTitle,
+            author: newAuthor,
+            url: newUrl
+        }
+        const response = blogService.create(blog)
+        setNewTitle('')
+        setNewAuthor('')
+        setNewUrl('')
+    }
+
+    
     return (
         <div>
             {user === null &&
@@ -77,7 +96,15 @@ const App = () => {
                 />}
             {user !== null && <LoggedInInfo user={user} handleLogout={handleLogout}/> }
             {user !== null && <BlogList blogs={blogs}/> }
-
+            {user !== null && <CreateBlog 
+                addNewBlog={addNewBlog}
+                newTitle={newTitle}
+                setNewTitle={setNewTitle}
+                newAuthor={newAuthor}
+                setNewAuthor={setNewAuthor}
+                newUrl={newUrl}
+                setNewUrl={setNewUrl}
+                />}
         </div>
     )
 }
