@@ -6,6 +6,8 @@ import LoggedInInfo from './components/LoggedInInfo'
 import CreateBlog from './components/CreateBlog'
 import loginService from './services/login'
 
+import './index.css'
+
 const App = () => {
     const [blogs, setBlogs] = useState([])
 
@@ -13,6 +15,7 @@ const App = () => {
     const [newAuthor, setNewAuthor] = useState('')
     const [newUrl, setNewUrl] = useState('')
 
+    const [successMessage, setSuccessMessage] = useState(null)
     const [errorMessage, setErrorMessage] = useState(null)
 
     const [username, setUsername] = useState('')
@@ -50,7 +53,7 @@ const App = () => {
             setUsername('')
             setPassword('')
         } catch (exception) {
-            setErrorMessage('wrong credentials')
+            setErrorMessage('Wrong username or password')
             setTimeout(() => {
                 setErrorMessage(null)
             }, 5000)
@@ -71,6 +74,7 @@ const App = () => {
     const addNewBlog = (event) => {
         event.preventDefault()
         console.log(newTitle, newAuthor, newUrl)
+        try {
         const blog = {
             title: newTitle,
             author: newAuthor,
@@ -80,6 +84,16 @@ const App = () => {
         setNewTitle('')
         setNewAuthor('')
         setNewUrl('')
+        setSuccessMessage(`New blog '${blog.title}' added`)
+            setTimeout(() => {
+                setErrorMessage(null)
+            }, 5000)
+        } catch (exception) {
+            setErrorMessage('Could not send blog')
+            setTimeout(() => {
+                setErrorMessage(null)
+            }, 5000)
+        }
     }
 
     
@@ -95,7 +109,6 @@ const App = () => {
                 errorMessage={errorMessage}
                 />}
             {user !== null && <LoggedInInfo user={user} handleLogout={handleLogout}/> }
-            {user !== null && <BlogList blogs={blogs}/> }
             {user !== null && <CreateBlog 
                 addNewBlog={addNewBlog}
                 newTitle={newTitle}
@@ -104,7 +117,9 @@ const App = () => {
                 setNewAuthor={setNewAuthor}
                 newUrl={newUrl}
                 setNewUrl={setNewUrl}
+                successMessage={successMessage}
                 />}
+            {user !== null && <BlogList blogs={blogs}/> }
         </div>
     )
 }

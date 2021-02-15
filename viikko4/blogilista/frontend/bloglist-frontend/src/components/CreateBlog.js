@@ -1,9 +1,11 @@
 import React from 'react'
+import SuccessNotification from './SuccessNotification'
 
-const CreateBlog = ({addNewBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl}) => {
+const CreateBlog = ({addNewBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl, successMessage}) => {
     return (
         <div>
             <h2>New blog here</h2>
+            <SuccessNotification message={successMessage} />
             <form onSubmit={addNewBlog}>
                 title
                 <input
