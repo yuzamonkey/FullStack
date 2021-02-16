@@ -1,3 +1,5 @@
+
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import SuccessNotification from './SuccessNotification'
 //, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl
@@ -53,6 +55,10 @@ const CreateBlog = ({ postBlog, successMessage }) => {
             </form>
         </div>
     )
+}
+
+CreateBlog.propTypes = {
+    postBlog: PropTypes.func.isRequired
 }
 
 export default CreateBlog

@@ -66,6 +66,7 @@ const App = () => {
         try {
             window.localStorage.clear()
             blogService.deleteToken()
+            setUser(null)
         } catch (exception) {
             console.log("SOMETHING WRONG", exception)
         }
