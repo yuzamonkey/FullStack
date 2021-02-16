@@ -1,12 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SuccessNotification from './SuccessNotification'
+//, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl
+const CreateBlog = ({ postBlog, successMessage }) => {
+    const [newTitle, setNewTitle] = useState('')
+    const [newAuthor, setNewAuthor] = useState('')
+    const [newUrl, setNewUrl] = useState('')
 
-const CreateBlog = ({addNewBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl, successMessage}) => {
+    const addBlog = (event) => {
+        console.log("addblog called")
+        event.preventDefault()
+        postBlog({
+            title: newTitle,
+            author: newAuthor,
+            url: newUrl
+        })
+        setNewTitle('')
+        setNewAuthor('')
+        setNewUrl('')
+    }
+
+
     return (
         <div>
             <h2>New blog here</h2>
             <SuccessNotification message={successMessage} />
-            <form onSubmit={addNewBlog}>
+            <form onSubmit={addBlog}>
                 title
                 <input
                     type="text"

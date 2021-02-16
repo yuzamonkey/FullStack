@@ -14,9 +14,6 @@ const App = () => {
 
     const blogFormRef = useRef()
     const [blogFormVisible, setBlogFormVisible] = useState(false)
-    const [newTitle, setNewTitle] = useState('')
-    const [newAuthor, setNewAuthor] = useState('')
-    const [newUrl, setNewUrl] = useState('')
 
     const [successMessage, setSuccessMessage] = useState(null)
     const [errorMessage, setErrorMessage] = useState(null)
@@ -74,25 +71,15 @@ const App = () => {
         }
     }
 
-    const addNewBlog = (event) => {
-        event.preventDefault()
-        console.log(newTitle, newAuthor, newUrl)
+    const addBlog = (blog) => {
         try {
-        blogFormRef.current.toggleVisibility()
-        const blog = {
-            title: newTitle,
-            author: newAuthor,
-            url: newUrl
-        }
-        blogService
-            .create(blog)
-            .then(returnedBlog => {
-                setBlogs(blogs.concat(returnedBlog))
-            })
-        setNewTitle('')
-        setNewAuthor('')
-        setNewUrl('')
-        setSuccessMessage(`New blog '${blog.title}' added`)
+            blogFormRef.current.toggleVisibility()
+            blogService
+                .create(blog)
+                .then(returnedBlog => {
+                    setBlogs(blogs.concat(returnedBlog))
+                })
+            setSuccessMessage(`New blog '${blog.title}' added`)
             setTimeout(() => {
                 setErrorMessage(null)
             }, 5000)
@@ -104,34 +91,28 @@ const App = () => {
         }
     }
 
-    
+
     return (
         <div>
             {user === null &&
-            <LoginForm 
-                handleLogin={handleLogin}
-                username={username}
-                setUsername={setUsername}
-                password={password}
-                setPassword={setPassword}
-                errorMessage={errorMessage}
+                <LoginForm
+                    handleLogin={handleLogin}
+                    username={username}
+                    setUsername={setUsername}
+                    password={password}
+                    setPassword={setPassword}
+                    errorMessage={errorMessage}
                 />}
-            {user !== null && <LoggedInInfo user={user} handleLogout={handleLogout}/> }
-            {user !== null &&  
-            <Togglable buttonLabel='create blog' ref={blogFormRef}>
-                <CreateBlog 
-                    addNewBlog={addNewBlog}
-                    newTitle={newTitle}
-                    setNewTitle={setNewTitle}
-                    newAuthor={newAuthor}
-                    setNewAuthor={setNewAuthor}
-                    newUrl={newUrl}
-                    setNewUrl={setNewUrl}
-                    successMessage={successMessage}
-                />
-            </Togglable>
+            {user !== null && <LoggedInInfo user={user} handleLogout={handleLogout} />}
+            {user !== null &&
+                <Togglable buttonLabel='create blog' ref={blogFormRef}>
+                    <CreateBlog
+                        postBlog={addBlog}
+                        successMessage={successMessage}
+                    />
+                </Togglable>
             }
-            {user !== null && <BlogList blogs={blogs}/> }
+            {user !== null && <BlogList blogs={blogs} />}
         </div>
     )
 }
