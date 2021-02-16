@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
 import LoggedInInfo from './components/LoggedInInfo'
 import CreateBlog from './components/CreateBlog'
+import Togglable from './components/Togglable'
 import loginService from './services/login'
 
 import './index.css'
@@ -11,6 +12,8 @@ import './index.css'
 const App = () => {
     const [blogs, setBlogs] = useState([])
 
+    const blogFormRef = useRef()
+    const [blogFormVisible, setBlogFormVisible] = useState(false)
     const [newTitle, setNewTitle] = useState('')
     const [newAuthor, setNewAuthor] = useState('')
     const [newUrl, setNewUrl] = useState('')
@@ -75,12 +78,17 @@ const App = () => {
         event.preventDefault()
         console.log(newTitle, newAuthor, newUrl)
         try {
+        blogFormRef.current.toggleVisibility()
         const blog = {
             title: newTitle,
             author: newAuthor,
             url: newUrl
         }
-        const response = blogService.create(blog)
+        blogService
+            .create(blog)
+            .then(returnedBlog => {
+                setBlogs(blogs.concat(returnedBlog))
+            })
         setNewTitle('')
         setNewAuthor('')
         setNewUrl('')
@@ -109,16 +117,20 @@ const App = () => {
                 errorMessage={errorMessage}
                 />}
             {user !== null && <LoggedInInfo user={user} handleLogout={handleLogout}/> }
-            {user !== null && <CreateBlog 
-                addNewBlog={addNewBlog}
-                newTitle={newTitle}
-                setNewTitle={setNewTitle}
-                newAuthor={newAuthor}
-                setNewAuthor={setNewAuthor}
-                newUrl={newUrl}
-                setNewUrl={setNewUrl}
-                successMessage={successMessage}
-                />}
+            {user !== null &&  
+            <Togglable buttonLabel='create blog' ref={blogFormRef}>
+                <CreateBlog 
+                    addNewBlog={addNewBlog}
+                    newTitle={newTitle}
+                    setNewTitle={setNewTitle}
+                    newAuthor={newAuthor}
+                    setNewAuthor={setNewAuthor}
+                    newUrl={newUrl}
+                    setNewUrl={setNewUrl}
+                    successMessage={successMessage}
+                />
+            </Togglable>
+            }
             {user !== null && <BlogList blogs={blogs}/> }
         </div>
     )
