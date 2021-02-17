@@ -5,7 +5,6 @@ const Blog = ({ blog }) => {
 
     const changeView = () => {
         setShowAll(!showAll)
-        console.log(showAll)
     }
 
     if (showAll) {
