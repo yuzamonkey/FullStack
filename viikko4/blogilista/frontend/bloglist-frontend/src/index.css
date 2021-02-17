@@ -14,3 +14,9 @@
 .success {
     color: green;
 }
+
+.blog {
+    border: 1px solid black;
+    padding: 3px;
+    margin: 3px;
+}

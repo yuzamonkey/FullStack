@@ -1,9 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const Blog = ({ blog }) => (
-  <div>
-    {blog.title} {blog.author}
-  </div>
-)
+const Blog = ({ blog }) => {
+    const [showAll, setShowAll] = useState(false)
+
+    const changeView = () => {
+        setShowAll(!showAll)
+        console.log(showAll)
+    }
+
+    if (showAll) {
+        return (
+            <div className="blog">
+                {blog.title} {blog.author} <button onClick={changeView}>hide</button> <br></br>
+                {blog.url} <br></br>
+                likes: {blog.likes} <button>like</button><br></br>
+                {blog.user.name}
+            </div>
+        )
+    }
+    return (
+        <div className="blog">
+            {blog.title} {blog.author} <button onClick={changeView}>view</button>
+        </div>
+    )
+}
 
 export default Blog

@@ -13,7 +13,6 @@ const App = () => {
     const [blogs, setBlogs] = useState([])
 
     const blogFormRef = useRef()
-    const [blogFormVisible, setBlogFormVisible] = useState(false)
 
     const [successMessage, setSuccessMessage] = useState(null)
     const [errorMessage, setErrorMessage] = useState(null)
