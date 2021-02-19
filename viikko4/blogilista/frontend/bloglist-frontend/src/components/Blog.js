@@ -13,7 +13,7 @@ const Blog = ({ blog, addLike }) => {
             <div className="blog">
                 {blog.title} {blog.author} <button onClick={changeView}>hide</button> <br></br>
                 {blog.url} <br></br>
-                likes: {blog.likes} <button onClick={addLike} value={blog.title}>like</button><br></br>
+                likes: {blog.likes} <button onClick={addLike} value={blog.id}>like</button><br></br>
                 {blog.user.name}
             </div>
         )

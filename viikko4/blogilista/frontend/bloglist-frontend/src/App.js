@@ -92,10 +92,16 @@ const App = () => {
     }
 
     const addLike = (event) => {
-        //tähän jjäänyt kesken 5.8.
         event.preventDefault()
-        const blog = event.target.value
-        console.log("ADD LIKE TO", blog)
+        const blogId = event.target.value
+        blogService.getById(blogId).then(blog => {
+            blog.likes += 1
+            blogService.update(blogId, blog)
+            blogService.getAll().then(blogs =>
+                setBlogs(blogs)
+            )
+        })
+
     }
 
 
@@ -119,7 +125,7 @@ const App = () => {
                     />
                 </Togglable>
             }
-            {user !== null && <BlogList blogs={blogs} addLike={addLike}/>}
+            {user !== null && <BlogList blogs={blogs} addLike={addLike} />}
         </div>
     )
 }
