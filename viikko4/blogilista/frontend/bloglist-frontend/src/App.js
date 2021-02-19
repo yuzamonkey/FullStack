@@ -105,6 +105,21 @@ const App = () => {
 
     }
 
+    const deleteBlog = (event) => {
+        event.preventDefault()
+        const blogId = event.target.value
+        console.log(blogId)
+        const confirm = window.confirm(`DELETE BLOG?`)
+        if (confirm) {
+            console.log("DELETE CONFIRMED")
+            blogService.deleteBlog(blogId).then(response => {
+                blogService.getAll().then(blogs =>
+                    setBlogs(blogs.sort((a,b) => b.likes - a.likes))
+                )
+            })
+        }
+    }
+
 
     return (
         <div>
@@ -127,7 +142,7 @@ const App = () => {
                     />
                 </Togglable>
             }
-            {user !== null && <BlogList blogs={blogs} addLike={addLike} />}
+            {user !== null && <BlogList blogs={blogs} addLike={addLike} deleteBlog={deleteBlog} user={user}/>}
         </div>
     )
 }
