@@ -78,12 +78,16 @@ const App = () => {
             blogService
                 .create(blog)
                 .then(returnedBlog => {
-                    setBlogs(blogs.concat(returnedBlog))
+                    blogService.getAll().then(blogs =>
+                        setBlogs(blogs.sort((a,b) => b.likes - a.likes))
+                    )
                 })
+            
             setSuccessMessage(`New blog '${blog.title}' added`)
             setTimeout(() => {
                 setSuccessMessage(null)
             }, 5000)
+
         } catch (exception) {
             setErrorMessage('Could not send blog')
             setTimeout(() => {
