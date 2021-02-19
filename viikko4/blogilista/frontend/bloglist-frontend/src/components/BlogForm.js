@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import SuccessNotification from './SuccessNotification'
 //, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl
-const CreateBlog = ({ postBlog, successMessage }) => {
+const BlogForm = ({ postBlog, successMessage }) => {
     const [newTitle, setNewTitle] = useState('')
     const [newAuthor, setNewAuthor] = useState('')
     const [newUrl, setNewUrl] = useState('')
@@ -29,6 +29,7 @@ const CreateBlog = ({ postBlog, successMessage }) => {
             <form onSubmit={addBlog}>
                 title
                 <input
+                    id='title'
                     type="text"
                     value={newTitle}
                     name="Title"
@@ -37,6 +38,7 @@ const CreateBlog = ({ postBlog, successMessage }) => {
                 <br></br>
                 author
                 <input
+                    id='author'
                     type="text"
                     value={newAuthor}
                     name="Author"
@@ -45,6 +47,7 @@ const CreateBlog = ({ postBlog, successMessage }) => {
                 <br></br>
                 url
                 <input
+                    id='url'
                     type="text"
                     value={newUrl}
                     name="Url"
@@ -57,8 +60,8 @@ const CreateBlog = ({ postBlog, successMessage }) => {
     )
 }
 
-CreateBlog.propTypes = {
+BlogForm.propTypes = {
     postBlog: PropTypes.func.isRequired
 }
 
-export default CreateBlog
+export default BlogForm

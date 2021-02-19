@@ -3,7 +3,7 @@ import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
 import LoggedInInfo from './components/LoggedInInfo'
-import CreateBlog from './components/CreateBlog'
+import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import loginService from './services/login'
 
@@ -91,6 +91,13 @@ const App = () => {
         }
     }
 
+    const addLike = (event) => {
+        //tähän jjäänyt kesken 5.8.
+        event.preventDefault()
+        const blog = event.target.value
+        console.log("ADD LIKE TO", blog)
+    }
+
 
     return (
         <div>
@@ -106,13 +113,13 @@ const App = () => {
             {user !== null && <LoggedInInfo user={user} handleLogout={handleLogout} />}
             {user !== null &&
                 <Togglable buttonLabel='create blog' ref={blogFormRef}>
-                    <CreateBlog
+                    <BlogForm
                         postBlog={addBlog}
                         successMessage={successMessage}
                     />
                 </Togglable>
             }
-            {user !== null && <BlogList blogs={blogs} />}
+            {user !== null && <BlogList blogs={blogs} addLike={addLike}/>}
         </div>
     )
 }
