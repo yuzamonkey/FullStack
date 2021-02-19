@@ -56,6 +56,7 @@ describe('Blog app', function () {
             cy.contains('testiotsikko')
             cy.contains('testikirjailija')
             cy.contains('view').click()
+            //outoa, ettei päivity yhdellä klikkauksella
             cy.contains('like').click()
             cy.contains('like').click()
             cy.contains('likes: 1')

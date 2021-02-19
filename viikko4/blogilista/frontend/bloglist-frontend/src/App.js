@@ -5,6 +5,7 @@ import BlogList from './components/BlogList'
 import LoggedInInfo from './components/LoggedInInfo'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import SuccessNotification from './components/SuccessNotification'
 import loginService from './services/login'
 
 import './index.css'
@@ -23,7 +24,7 @@ const App = () => {
 
     useEffect(() => {
         blogService.getAll().then(blogs =>
-            setBlogs(blogs)
+            setBlogs(blogs.sort((a,b) => b.likes - a.likes))
         )
     }, [])
 
@@ -81,7 +82,7 @@ const App = () => {
                 })
             setSuccessMessage(`New blog '${blog.title}' added`)
             setTimeout(() => {
-                setErrorMessage(null)
+                setSuccessMessage(null)
             }, 5000)
         } catch (exception) {
             setErrorMessage('Could not send blog')
@@ -98,7 +99,7 @@ const App = () => {
             blog.likes += 1
             blogService.update(blogId, blog)
             blogService.getAll().then(blogs =>
-                setBlogs(blogs)
+                setBlogs(blogs.sort((a,b) => b.likes - a.likes))
             )
         })
 
@@ -117,6 +118,7 @@ const App = () => {
                     errorMessage={errorMessage}
                 />}
             {user !== null && <LoggedInInfo user={user} handleLogout={handleLogout} />}
+            <SuccessNotification message={successMessage} />
             {user !== null &&
                 <Togglable buttonLabel='create blog' ref={blogFormRef}>
                     <BlogForm

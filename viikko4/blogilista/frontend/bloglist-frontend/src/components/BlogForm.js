@@ -1,7 +1,6 @@
 
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import SuccessNotification from './SuccessNotification'
 //, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl
 const BlogForm = ({ postBlog, successMessage }) => {
     const [newTitle, setNewTitle] = useState('')
@@ -24,8 +23,8 @@ const BlogForm = ({ postBlog, successMessage }) => {
 
     return (
         <div>
+            
             <h2>New blog here</h2>
-            <SuccessNotification message={successMessage} />
             <form onSubmit={addBlog}>
                 title
                 <input
