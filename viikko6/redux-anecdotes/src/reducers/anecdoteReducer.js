@@ -21,7 +21,7 @@ export const addVote = id => {
     const changedAnecdote = {
       ...anecdoteToChange, votes: anecdoteToChange.votes + 1
     }
-    const response = await anecdoteService.addVote(id, changedAnecdote)
+    await anecdoteService.addVote(id, changedAnecdote)
     const updatedAnecdotes = await anecdoteService.getAll()
     const sorted = updatedAnecdotes.sort((a,b) => b.votes - a.votes)
     dispatch({
