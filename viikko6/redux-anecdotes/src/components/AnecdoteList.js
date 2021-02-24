@@ -9,11 +9,12 @@ import Notification from './Notification'
 const AnecdoteList = () => {
   const dispatch = useDispatch()
   const anecdotes = useSelector(state => state.anecdotes)
-  const filteredAnecdotes = useSelector(state => {
-    const filter = state.filter
-    const filteredAnecdotes = anecdotes.filter(anecdote => anecdote.content.includes(filter))
-    return filteredAnecdotes
-  })
+  const filteredAnecdotes = useSelector(state => state.anecdotes)
+  // const filteredAnecdotes = useSelector(state => {
+  //   const filter = state.filter
+  //   const filteredAnecdotes = anecdotes.filter(anecdote => anecdote.content.includes(filter))
+  //   return filteredAnecdotes
+  // })
   
 
   const vote = (id) => {
