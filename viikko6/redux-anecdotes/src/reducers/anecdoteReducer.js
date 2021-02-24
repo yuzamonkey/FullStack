@@ -1,12 +1,5 @@
-const getId = () => (100000 * Math.random()).toFixed(0)
+import anecdoteService from '../services/anecdotes'
 
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
-  }
-}
 
 const anecdoteReducer = (state = [], action) => {
   switch (action.type) {
@@ -21,7 +14,7 @@ const anecdoteReducer = (state = [], action) => {
       const sorted = newState.sort((a, b) => b.votes - a.votes)
       return sorted
     case 'ADD_ANECDOTE':
-      return state.concat(action.content)
+      return state.concat(action.data)
     case 'INIT_ANECDOTES':
       return action.data
     default:
@@ -36,19 +29,40 @@ export const addVote = (id) => {
   }
 }
 
-export const addAnecdote = (content) => {
-  return {
-    type: 'ADD_ANECDOTE',
-    content
+export const addAnecdote = content => {
+  return async dispatch => {
+    const newAnecdote = await anecdoteService.createNew(content)
+    console.log("NEW ANECDOTE", newAnecdote)
+    dispatch({
+      type: 'ADD_ANECDOTE',
+      data: newAnecdote
+    })
   }
 }
 
-export const initializeAnecdotes = (anecdotes) => {
-  return {
-    type: 'INIT_ANECDOTES',
-    data: anecdotes
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes= await anecdoteService.getAll()
+    console.log("ANECDOTES,",  anecdotes)
+    dispatch({
+      type: 'INIT_ANECDOTES',
+      data: anecdotes
+    })
   }
 }
+
+// export const addAnecdote = (content) => {
+//   return {
+//     type: 'ADD_ANECDOTE',
+//     content
+//   }
+// }
+// export const initializeAnecdotes = (anecdotes) => {
+//   return {
+//     type: 'INIT_ANECDOTES',
+//     data: anecdotes
+//   }
+// }
 
 
 export default anecdoteReducer
