@@ -11,7 +11,7 @@ const AnecdoteForm = (props) => {
     event.target.anecdote.value = ''
     props.addAnecdote(content)
 
-    props.showNotification(`Added new anecdote: ${content}`, 3)
+    props.showNotification(`Added new anecdote: ${content}`, 5)
   }
 
   return (
@@ -25,7 +25,7 @@ const AnecdoteForm = (props) => {
   )
 }
 
-const mapStateToProps = (state) => {}
+const mapStateToProps = (state) => {return{}}
 
 const mapDispatchToProps = {
   addAnecdote,

@@ -12,7 +12,7 @@ const AnecdoteList = (props) => {
     console.log('vote', id)
     props.addVote(id)
 
-    props.showNotification(`You voted for "${props.anecdotes.find(a => a.id === id).content}"`, 3)
+    props.showNotification(`You voted for "${props.anecdotes.find(a => a.id === id).content}"`, 5)
   }
 
   return (

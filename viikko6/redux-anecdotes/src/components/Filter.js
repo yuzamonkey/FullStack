@@ -16,7 +16,7 @@ const Filter = (props) => {
 
 }
 
-const mapStateToProps = (state) => {}
+const mapStateToProps = (state) => {return{}}
 
 const mapDispatchToProps = {
   addFilter
