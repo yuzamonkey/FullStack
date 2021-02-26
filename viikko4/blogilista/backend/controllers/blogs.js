@@ -32,7 +32,6 @@ blogsRouter.post('/', async (request, response, next) => {
         }
         next(error)
     } else {
-        //4.19
         if (request.authenticatedUser !== undefined) {
             const blog = new Blog({
                 title: body.title,

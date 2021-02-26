@@ -30,14 +30,14 @@ describe('Blog app', function () {
             cy.get('#notification').should('have.css', 'color', 'rgb(255, 0, 0)')
         })
     })
-    describe.only('When logged in', function() {
-        beforeEach(function() {
+    describe.only('When logged in', function () {
+        beforeEach(function () {
             cy.get('#username').type('testikayttaja')
             cy.get('#password').type('salasana')
             cy.get('#login-button').click()
         })
 
-        it('A blog can be created', function() {
+        it('A blog can be created', function () {
             cy.contains('create blog').click()
             cy.get('#title').type('testiotsikko')
             cy.get('#author').type('testikirjailija')
@@ -56,13 +56,12 @@ describe('Blog app', function () {
             cy.contains('testiotsikko')
             cy.contains('testikirjailija')
             cy.contains('view').click()
-            //outoa, ettei päivity yhdellä klikkauksella
             cy.contains('like').click()
             cy.contains('like').click()
             cy.contains('likes: 1')
         })
-        
-        it.only('A blog can be deleted', function() {
+
+        it('A blog can be deleted', function () {
             cy.contains('create blog').click()
             cy.get('#title').type('testiotsikko')
             cy.get('#author').type('testikirjailija')
@@ -72,6 +71,39 @@ describe('Blog app', function () {
             cy.contains('testikirjailija')
             cy.contains('view').click()
             cy.contains('delete').click()
+        })
+
+        const like = (title, n) => {
+            for (let i = 0; i < n; i++) {
+                cy.contains(title).contains('like').click()
+            }
+        }
+        const createBlogs = (n) => {
+            for (let i = 1; i <= n; i++) {
+                cy.contains('create blog').click()
+                cy.get('#title').type(`testiotsikko ${i}`)
+                cy.get('#author').type(`testikirjailija${i}`)
+                cy.get('#url').type(`testiurl${i}`)
+                cy.get('#createBlog').click()
+            }
+        }
+
+        it.only('Blogs are ordered by likes', function () {
+            createBlogs(4)
+            cy.contains('testiotsikko 1').parent().find('button').click()
+            like('testiotsikko 1', 3)
+            cy.contains('testiotsikko 2').parent().find('button').click()
+            cy.contains('testiotsikko 3').parent().find('button').click()
+            like('testiotsikko 3', 7)
+            cy.contains('testiotsikko 4').parent().find('button').click()
+
+            //kesken 5.22
+            cy.get('#blogs').children().then(blogs => {
+                for (let blog of blogs) {
+                    console.log(blog)
+                    blog.foreach(item => console.log(item))
+                }
+            })
         })
     })
 })

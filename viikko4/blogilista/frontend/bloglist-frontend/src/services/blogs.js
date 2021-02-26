@@ -20,15 +20,17 @@ const getById = (id) => {
     return request.then(response => response.data)
 }
 
-const update = (id, newObject) => {
-    return axios.put(`${baseUrl}/${id}`, newObject)
+const update = async (id, newObject) => {
+    return await axios.put(`${baseUrl}/${id}`, newObject)
 }
 
 const create = async newObject => {
     const config = {
         headers: { Authorization: token },
     }
+    console.log("TÄÄLLÄ OLLAAN")
     const response = await axios.post(baseUrl, newObject, config)
+    console.log("CREATE RESPONSE", response.status)
     return response.data
 }
 
