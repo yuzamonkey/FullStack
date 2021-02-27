@@ -65,7 +65,7 @@ const userIsLoggedIn = (request, user) => {
 
 
 blogsRouter.delete('/:id', async (request, response, next) => {
-    console.log(request.params.id)
+    //console.log(request.params.id)
     const blog = await Blog.findById(request.params.id)
     if (userIsLoggedIn(request, blog.user)) {
         await blog.delete()
