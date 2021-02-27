@@ -11,9 +11,6 @@ const User = require('../models/user')
 
 blogsRouter.get('/:id', async (request, response) => {
     const blog = await Blog.findById(request.params.id)
-
-    console.log("BLOG", blog)
-    console.log("LIKESTYPE", typeof (blog.likes))
     response.json(blog.toJSON())
 })
 
