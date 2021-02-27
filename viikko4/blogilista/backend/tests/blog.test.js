@@ -115,15 +115,11 @@ describe('delete item', () => {
 //4.14 kesken
 describe('edit likes of blog', () => {
     test('editing updates likes', async () => {
-        //addBlog
-        const id = await addBlogPost().id
-        //getLikes
-        const likesBefore = await getBlogPost(id).likes
-        //console.log("LIKES BEFORE", likesBefore)
-        //updateLikes+10
+        const accessToken = await loginTestUser()
+        const id = (await addBlogPost(accessToken)).id
+        const likesBefore = (await getBlogPost(id)).likes
         await updateLikes(id, likesBefore+10)
-        //getLikes
-        const likesAfter = await getBlogPost(id).likes
+        const likesAfter = (await getBlogPost(id)).likes
         expect(likesAfter).toEqual(likesBefore+10)
     })
 })
