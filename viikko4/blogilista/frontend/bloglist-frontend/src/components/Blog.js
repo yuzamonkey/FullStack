@@ -13,7 +13,7 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
             <div id="blog" className="blog">
                 {blog.title} {blog.author} <button onClick={changeView}>hide</button> <br></br>
                 {blog.url} <br></br>
-                <p id="likeCount">likes: {blog.likes} <button onClick={() => addLike(blog)}>like</button></p><br></br>
+                <p>likes: <span className="likeCount">{blog.likes}</span> <button onClick={() => addLike(blog)}>like</button></p><br></br>
                 {blog.user.name} <br></br>
                 {user.name === blog.user.name
                     ? <button onClick={deleteBlog} value={blog.id}>delete</button>
