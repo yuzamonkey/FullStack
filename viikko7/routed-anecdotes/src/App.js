@@ -7,6 +7,7 @@ import AnecdoteList from './components/AnecdoteList'
 import CreateNew from './components/CreateNew'
 import Footer from './components/Footer'
 import Menu from './components/Menu'
+import Notification from './components/Notification'
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -31,6 +32,8 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`a new anecdote '${anecdote.content}' created`)
+    setTimeout(() => {setNotification('')}, 10000)
   }
 
   const anecdoteById = (id) =>
@@ -43,7 +46,6 @@ const App = () => {
       ...anecdote,
       votes: anecdote.votes + 1
     }
-
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
@@ -64,8 +66,10 @@ const App = () => {
           </Route>
           <Route path='/create'>
             <CreateNew addNew={addNew} />
+            
           </Route>
           <Route path='/'>
+            <Notification content={notification}/>
             <AnecdoteList anecdotes={anecdotes} />
           </Route>
         </Switch>
