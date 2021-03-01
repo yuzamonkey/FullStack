@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, useRouteMatch } from 'react-router-dom'
 
 import About from './components/About'
 import Anecdote from './components/Anecdote'
@@ -16,14 +16,14 @@ const App = () => {
       author: 'Jez Humble',
       info: 'https://martinfowler.com/bliki/FrequencyReducesDifficulty.html',
       votes: 0,
-      id: '1'
+      id: 1
     },
     {
       content: 'Premature optimization is the root of all evil',
       author: 'Donald Knuth',
       info: 'http://wiki.c2.com/?PrematureOptimization',
       votes: 0,
-      id: '2'
+      id: 2
     }
   ])
 
@@ -35,6 +35,11 @@ const App = () => {
     setNotification(`a new anecdote '${anecdote.content}' created`)
     setTimeout(() => {setNotification('')}, 10000)
   }
+
+  const match = useRouteMatch('/anecdotes/:id')
+  const anecdote = match
+    ? anecdotes.find(a => a.id === Number(match.params.id))
+    : null
 
   const anecdoteById = (id) =>
     anecdotes.find(a => a.id === id)
@@ -50,13 +55,12 @@ const App = () => {
   }
 
   return (
-    <Router>
       <div>
         <h1>Software anecdotes</h1>
         <Menu />
         <Switch>
           <Route path='/anecdotes/:id'>
-            <Anecdote anecdotes={anecdotes} />
+            <Anecdote anecdote={anecdote} />
           </Route>
           <Route path='/anecdotes'>
             <AnecdoteList anecdotes={anecdotes} />
@@ -75,7 +79,6 @@ const App = () => {
         </Switch>
         <Footer />
       </div>
-    </Router>
   )
 }
 
