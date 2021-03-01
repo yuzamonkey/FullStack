@@ -18,6 +18,12 @@ const CreateNew = (props) => {
     })
     history.push('/')
   }
+  const reset = (e) => {
+    e.preventDefault()
+    content.reset()
+    author.reset()
+    info.reset()
+  }
 
   return (
     <div>
@@ -35,7 +41,8 @@ const CreateNew = (props) => {
           url for more info
           <input name='info' value={info.value} onChange={info.onChange} />
         </div>
-        <button>create</button>
+        <input type="submit" value="create" />
+        <button onClick={reset}>reset</button>
       </form>
     </div>
   )
