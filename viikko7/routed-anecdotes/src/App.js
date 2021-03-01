@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import About from './components/About'
+import Anecdote from './components/Anecdote'
 import AnecdoteList from './components/AnecdoteList'
 import CreateNew from './components/CreateNew'
 import Footer from './components/Footer'
@@ -52,6 +53,9 @@ const App = () => {
         <h1>Software anecdotes</h1>
         <Menu />
         <Switch>
+          <Route path='/anecdotes/:id'>
+            <Anecdote anecdotes={anecdotes} />
+          </Route>
           <Route path='/anecdotes'>
             <AnecdoteList anecdotes={anecdotes} />
           </Route>
