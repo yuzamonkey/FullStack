@@ -1,6 +1,6 @@
 import React from 'react'
-import {useHistory} from 'react-router-dom'
-import {useField} from '../hooks/index'
+import { useHistory } from 'react-router-dom'
+import { useField } from '../hooks/index'
 
 const CreateNew = (props) => {
   const content = useField()
@@ -10,9 +10,9 @@ const CreateNew = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.addNew({ 
-      content: content.value, 
-      author: author.value, 
+    props.addNew({
+      content: content.value,
+      author: author.value,
       info: info.value,
       votes: 0
     })
@@ -31,22 +31,21 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...content} reset={0}/>
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...author} reset={0}/>
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...info} reset={0}/>
         </div>
         <input type="submit" value="create" />
         <button onClick={reset}>reset</button>
       </form>
     </div>
   )
-
 }
 
 export default CreateNew
