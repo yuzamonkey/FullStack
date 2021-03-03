@@ -12,6 +12,7 @@ import Togglable from './components/Togglable'
 import SuccessNotification from './components/SuccessNotification'
 import Menu from './components/Menu'
 import Users from './components/Users'
+import User from './components/User'
 
 
 import './index.css'
@@ -142,6 +143,9 @@ const App = () => {
         <SuccessNotification message={successMessage} />
         <ErrorNotification message={errorMessage} />
         <Switch>
+          <Route path='/users/:id'>
+            <User users={users} blogs={blogs}/>
+          </Route>
           <Route path='/users'>
             <Users users={users}/>
           </Route>
