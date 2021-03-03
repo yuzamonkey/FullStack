@@ -29,7 +29,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [users, setUsers] = useState(undefined)
+  const [users, setUsers] = useState([])
   
   useEffect(() => {
     userService.getAll().then(response => setUsers(response))
@@ -125,6 +125,11 @@ const App = () => {
     }
   }
 
+  const userMatch = useRouteMatch('/users/:id')
+  const userInfo = userMatch 
+  ? users.find(user => user.id === userMatch.params.id)
+  : null
+
   if (!user) {
     return (
       <LoginForm
@@ -144,7 +149,7 @@ const App = () => {
         <ErrorNotification message={errorMessage} />
         <Switch>
           <Route path='/users/:id'>
-            <User users={users} blogs={blogs}/>
+            <User user={userInfo} blogs={blogs}/>
           </Route>
           <Route path='/users'>
             <Users users={users}/>
