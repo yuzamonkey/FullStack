@@ -8,16 +8,16 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
         setShowAll(!showAll)
     }
 
-    if (showAll) {
+    if (!showAll) {
         return (
             <div id="blog" className="blog">
                 {blog.title} {blog.author} <button onClick={changeView}>hide</button> <br></br>
                 {blog.url} <br></br>
-                <p>likes: <span className="likeCount">{blog.likes}</span> <button onClick={() => addLike(blog)}>like</button></p><br></br>
+                <p>likes: <span className="likeCount">{blog.likes}</span> <button onClick={() => addLike(blog)}>like</button></p>
                 {blog.user.name} <br></br>
                 {user.name === blog.user.name
                     ? <button onClick={deleteBlog} value={blog.id}>delete</button>
-                    : <></>
+                    : null
                 }
 
             </div>

@@ -2,10 +2,9 @@ import React from 'react'
 
 const LoggedInInfo = ({user, handleLogout}) => {
     return (
-        <p>User {user.name} is logged in
+        <span>&emsp;User <i>{user.name}</i> is logged in&nbsp;
         <button onClick={handleLogout}>logout</button>
-        </p>
-
+        </span>
     )
 }
 

@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
+
 import blogService from './services/blogs'
+import loginService from './services/login'
+
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
-import LoggedInInfo from './components/LoggedInInfo'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import SuccessNotification from './components/SuccessNotification'
-import loginService from './services/login'
+import Menu from './components/Menu'
+
 
 import './index.css'
 import ErrorNotification from './components/ErrorNotification'
@@ -113,31 +117,34 @@ const App = () => {
     }
   }
 
-
-  return (
-    <div>
-      {user === null &&
-        <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-          errorMessage={errorMessage}
-        />}
-      {user !== null && <LoggedInInfo user={user} handleLogout={handleLogout} />}
-      <SuccessNotification message={successMessage}/>
-      <ErrorNotification message={errorMessage} />
-      {user !== null &&
+  if (!user) {
+    return (
+      <LoginForm
+        handleLogin={handleLogin}
+        username={username}
+        setUsername={setUsername}
+        password={password}
+        setPassword={setPassword}
+        errorMessage={errorMessage}
+      />
+    )
+  } else {
+    return (
+      <div>
+        <Menu user={user} handleLogout={handleLogout}/>
+        <SuccessNotification message={successMessage} />
+        <ErrorNotification message={errorMessage} />
         <Togglable buttonLabel='create blog' ref={blogFormRef}>
           <BlogForm
             postBlog={addBlog}
           />
         </Togglable>
-      }
-      {user !== null && <BlogList blogs={blogs} addLike={addLike} deleteBlog={deleteBlog} user={user} />}
-    </div>
-  )
+        <BlogList blogs={blogs} addLike={addLike} deleteBlog={deleteBlog} user={user} />
+      </div>
+    )
+  }
+
+
 }
 
 export default App
