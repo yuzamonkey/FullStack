@@ -5,28 +5,26 @@ import CommentForm from './CommentForm'
 const Blog = ({ blog, addLike, deleteBlog, user }) => {
   const [comments, setComments] = useState([])
   useEffect(() => {
+    if (blog) {
     blogService
       .getComments(blog.id)
       .then(response => setComments(response))
-  }, [blog.id])
+    }
+  }, [blog])
 
-  // if (!blog) {
-  //   return null
-  // }
+  if (!blog) {
+    return null
+  }
 
-  const url = String(`${blog.url}`)
-  console.log("URL", url)
-
-  //??
   const submitHandle = e => {
     e.preventDefault()
-    window.location.replace(`https://${url}`)
+    window.location.replace(`https://${blog.url}`)
   }
-  //??
+
   return (
     <div id="blog">
       <h2>{blog.title}, {blog.author}</h2>
-      <p><a href="www.wikipedia.org" onClick={submitHandle}>{blog.url}</a> <br></br>
+      <p><a href="" onClick={submitHandle}>{blog.url}</a> <br></br>
       likes: <span className="likeCount">{blog.likes}</span> <button onClick={() => addLike(blog)}>like</button><br></br>
       added by: {blog.user.name} <br></br></p>
       <h3>comments</h3>
