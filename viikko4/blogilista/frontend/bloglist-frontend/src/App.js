@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 
 import blogService from './services/blogs'
+import userService from './services/users'
 import loginService from './services/login'
 
 import LoginForm from './components/LoginForm'
@@ -10,6 +11,7 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import SuccessNotification from './components/SuccessNotification'
 import Menu from './components/Menu'
+import Users from './components/Users'
 
 
 import './index.css'
@@ -26,6 +28,11 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [users, setUsers] = useState(undefined)
+  
+  useEffect(() => {
+    userService.getAll().then(response => setUsers(response))
+  }, [])
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -80,7 +87,7 @@ const App = () => {
   const addBlog = async (blog) => {
     try {
       blogFormRef.current.toggleVisibility()
-      const response = await blogService.create(blog)
+      await blogService.create(blog)
       const all = await blogService.getAll()
       setBlogs(all.sort((a, b) => b.likes - a.likes))
       setSuccessMessage(`New blog '${blog.title}' added`)
@@ -131,15 +138,23 @@ const App = () => {
   } else {
     return (
       <div>
-        <Menu user={user} handleLogout={handleLogout}/>
+        <Menu user={user} handleLogout={handleLogout} />
         <SuccessNotification message={successMessage} />
         <ErrorNotification message={errorMessage} />
+        <Switch>
+          <Route path='/users'>
+            <Users users={users}/>
+          </Route>
+          <Route path='/blogs'>
+            <BlogList blogs={blogs} addLike={addLike} deleteBlog={deleteBlog} user={user} />
+          </Route>
+        </Switch>
         <Togglable buttonLabel='create blog' ref={blogFormRef}>
           <BlogForm
             postBlog={addBlog}
           />
         </Togglable>
-        <BlogList blogs={blogs} addLike={addLike} deleteBlog={deleteBlog} user={user} />
+        
       </div>
     )
   }

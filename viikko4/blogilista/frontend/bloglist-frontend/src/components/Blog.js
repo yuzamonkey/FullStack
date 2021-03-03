@@ -8,7 +8,7 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
         setShowAll(!showAll)
     }
 
-    if (!showAll) {
+    if (showAll) {
         return (
             <div id="blog" className="blog">
                 {blog.title} {blog.author} <button onClick={changeView}>hide</button> <br></br>
