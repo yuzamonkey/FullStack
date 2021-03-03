@@ -7,9 +7,7 @@ import loginService from './services/login'
 
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
-import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
-import Togglable from './components/Togglable'
 import SuccessNotification from './components/SuccessNotification'
 import Menu from './components/Menu'
 import Users from './components/Users'
@@ -164,10 +162,10 @@ const App = () => {
             <Blog blog={blogInfo} addLike={addLike} deleteBlog={deleteBlog} user={user} />
           </Route>
           <Route path='/blogs'>
-            <BlogList blogs={blogs} addBlog={addBlog} ref={blogFormRef}/>
+            <BlogList blogs={blogs} addBlog={addBlog} blogFormRef={blogFormRef}/>
           </Route>
           <Route path='/'>
-            <BlogList blogs={blogs} addBlog={addBlog} ref={blogFormRef}/>
+            <BlogList blogs={blogs} addBlog={addBlog} blogFormRef={blogFormRef}/>
           </Route>
         </Switch>
       </div>
