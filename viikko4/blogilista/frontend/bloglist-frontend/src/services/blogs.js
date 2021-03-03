@@ -20,6 +20,11 @@ const getById = (id) => {
     return request.then(response => response.data)
 }
 
+const getComments = (id) => {
+  const request = axios.get(`${baseUrl}/${id}/comments`)
+  return request.then(response => response.data)
+}
+
 const update = async (id, newObject) => {
     return await axios.put(`${baseUrl}/${id}`, newObject)
 }
@@ -40,4 +45,4 @@ const deleteBlog = (id) => {
     return axios.delete(`${baseUrl}/${id}`, config)
 }
 
-export default { setToken, deleteToken, getAll, getById, update, create, deleteBlog }
+export default { setToken, deleteToken, getAll, getById, getComments, update, create, deleteBlog }
