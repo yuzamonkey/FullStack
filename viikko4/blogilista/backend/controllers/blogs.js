@@ -48,12 +48,14 @@ blogsRouter.post('/', async (request, response, next) => {
 })
 //comments
 blogsRouter.get('/:id/comments', async (request, response, next) => {
-  const comments = await Comment.find({})
+  const comments = await Comment.find({blogId: request.params.id})
+  //const comments = await Comment.find({})
   response.json(comments.map(c => c.toJSON()))
 })
 
 blogsRouter.post('/:id/comments', async (request, response, next) => {
   const body = request.body
+  const blogId = request.params.id
   if (!body.comment) {
     const error = {
       name: 'ValidationError',
@@ -62,6 +64,7 @@ blogsRouter.post('/:id/comments', async (request, response, next) => {
     next(error)
   } else {
     const comment = new Comment({
+      blogId: blogId,
       comment: body.comment
     })
     const savedComment = await comment.save()

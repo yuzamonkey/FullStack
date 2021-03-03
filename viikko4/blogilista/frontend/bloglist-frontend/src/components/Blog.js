@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import blogService from '../services/blogs'
+import CommentForm from './CommentForm'
 
 const Blog = ({ blog, addLike, deleteBlog, user }) => {
   const [comments, setComments] = useState([])
@@ -7,7 +8,7 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
     blogService
       .getComments(blog.id)
       .then(response => setComments(response))
-  }, [])
+  }, [blog.id])
 
   // if (!blog) {
   //   return null
@@ -29,6 +30,7 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
       likes: <span className="likeCount">{blog.likes}</span> <button onClick={() => addLike(blog)}>like</button><br></br>
       added by: {blog.user.name} <br></br></p>
       <h3>comments</h3>
+      <CommentForm />
       <ul>
         {comments.map(c => <li>{c.comment}</li>)}
       </ul>
