@@ -8,6 +8,7 @@ import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
+import Blog from './components/Blog'
 import Togglable from './components/Togglable'
 import SuccessNotification from './components/SuccessNotification'
 import Menu from './components/Menu'
@@ -129,6 +130,11 @@ const App = () => {
   const userInfo = userMatch 
   ? users.find(user => user.id === userMatch.params.id)
   : null
+  
+  const blogMatch = useRouteMatch('/blogs/:id')
+  const blogInfo = blogMatch 
+  ? blogs.find(blog => blog.id === blogMatch.params.id)
+  : null
 
   if (!user) {
     return (
@@ -154,7 +160,13 @@ const App = () => {
           <Route path='/users'>
             <Users users={users}/>
           </Route>
+          <Route path='/blogs/:id'>
+            <Blog blog={blogInfo} addLike={addLike} deleteBlog={deleteBlog} user={user} />
+          </Route>
           <Route path='/blogs'>
+            <BlogList blogs={blogs} addLike={addLike} deleteBlog={deleteBlog} user={user} />
+          </Route>
+          <Route path='/'>
             <BlogList blogs={blogs} addLike={addLike} deleteBlog={deleteBlog} user={user} />
           </Route>
         </Switch>
