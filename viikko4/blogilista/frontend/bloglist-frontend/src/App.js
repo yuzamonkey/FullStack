@@ -164,18 +164,12 @@ const App = () => {
             <Blog blog={blogInfo} addLike={addLike} deleteBlog={deleteBlog} user={user} />
           </Route>
           <Route path='/blogs'>
-            <BlogList blogs={blogs} addLike={addLike} deleteBlog={deleteBlog} user={user} />
+            <BlogList blogs={blogs} addBlog={addBlog} ref={blogFormRef}/>
           </Route>
           <Route path='/'>
-            <BlogList blogs={blogs} addLike={addLike} deleteBlog={deleteBlog} user={user} />
+            <BlogList blogs={blogs} addBlog={addBlog} ref={blogFormRef}/>
           </Route>
         </Switch>
-        <Togglable buttonLabel='create blog' ref={blogFormRef}>
-          <BlogForm
-            postBlog={addBlog}
-          />
-        </Togglable>
-        
       </div>
     )
   }
