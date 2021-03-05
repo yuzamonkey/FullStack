@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import LoggedInInfo from './LoggedInInfo'
 
-const Menu = ({user, handleLogout}) => {
+const Menu = () => {
 
   const padding = {
     padding: 5,
@@ -12,7 +12,7 @@ const Menu = ({user, handleLogout}) => {
     <div style={padding}>
       <Link to='/blogs' style={padding}>blogs</Link>
       <Link to='/users' style={padding}>users</Link>
-      <LoggedInInfo user={user} handleLogout={handleLogout}/>
+      <LoggedInInfo/>
     </div>
   )
 }

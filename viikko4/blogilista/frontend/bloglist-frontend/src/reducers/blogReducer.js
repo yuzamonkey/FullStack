@@ -1,7 +1,7 @@
 import blogService from '../services/blogs'
 
 const blogRedurer = (state = [], action) => {
-  switch(action.type) {
+  switch (action.type) {
     case 'LIKE':
       return action.data
     case 'ADD_BLOG':
@@ -24,7 +24,7 @@ export const addLike = id => {
     }
     await blogService.addLike(id, changedBlog)
     const updatedBlogs = await blogService.getAll()
-    const sorted = updatedBlogs.sort((a,b) => b.likes - a.likes)
+    const sorted = updatedBlogs.sort((a, b) => b.likes - a.likes)
     dispatch({
       type: 'LIKE',
       data: sorted

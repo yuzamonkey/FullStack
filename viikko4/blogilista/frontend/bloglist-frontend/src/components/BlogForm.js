@@ -26,7 +26,6 @@ const BlogForm = (props) => {
 
   return (
     <div>
-
       <h2>New blog here</h2>
       <form onSubmit={addBlog}>
         title

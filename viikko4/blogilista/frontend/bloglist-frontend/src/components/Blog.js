@@ -4,7 +4,6 @@ import blogService from '../services/blogs'
 import { addLike } from '../reducers/blogReducer'
 import { deleteBlog } from '../reducers/blogReducer'
 import { connect } from 'react-redux'
-import { checkPropTypes } from 'prop-types'
 
 const Blog = (props) => {
   const [comments, setComments] = useState([])

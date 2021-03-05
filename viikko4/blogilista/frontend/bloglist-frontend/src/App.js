@@ -5,7 +5,6 @@ import { initializeBlogs } from './reducers/blogReducer'
 
 import blogService from './services/blogs'
 import userService from './services/users'
-import loginService from './services/login'
 
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
@@ -29,10 +28,6 @@ const App = () => {
 
   const blogFormRef = useRef()
 
-  const [errorMessage, setErrorMessage] = useState(null)
-
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [users, setUsers] = useState([])
 
@@ -55,42 +50,6 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    console.log('logging in with', username, password)
-
-    try {
-      const user = await loginService.login({
-        username, password,
-      })
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-      console.log(window.localStorage.getItem('loggedBlogappUser'))
-      blogService.setToken(user.token)
-
-      setUser(user)
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      setErrorMessage('Wrong username or password')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-    }
-  }
-
-  const handleLogout = async (event) => {
-    event.preventDefault()
-    console.log("LOGGIN OUT")
-    try {
-      window.localStorage.clear()
-      blogService.deleteToken()
-      setUser(null)
-    } catch (exception) {
-      console.log("SOMETHING WRONG", exception)
-    }
-  }
-
-
   const userMatch = useRouteMatch('/users/:id')
   const userInfo = userMatch
     ? users.find(user => user.id === userMatch.params.id)
@@ -104,21 +63,13 @@ const App = () => {
   if (!user) {
     return (
       <div>
-        <ErrorNotification />
-        <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-          errorMessage={errorMessage}
-        />
+        <LoginForm/>
       </div>
     )
   } else {
     return (
       <div>
-        <Menu user={user} handleLogout={handleLogout} />
+        <Menu />
         <SuccessNotification />
         <ErrorNotification />
         <Switch>
