@@ -1,8 +1,9 @@
-
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-//, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl
-const BlogForm = ({ postBlog }) => {
+import { showNotification } from '../reducers/notificationReducer'
+import { connect } from 'react-redux'
+
+const BlogForm = (props) => {
     const [newTitle, setNewTitle] = useState('')
     const [newAuthor, setNewAuthor] = useState('')
     const [newUrl, setNewUrl] = useState('')
@@ -10,7 +11,7 @@ const BlogForm = ({ postBlog }) => {
     const addBlog = (event) => {
         console.log("addblog called")
         event.preventDefault()
-        postBlog({
+        props.postBlog({
             title: newTitle,
             author: newAuthor,
             url: newUrl
@@ -18,6 +19,8 @@ const BlogForm = ({ postBlog }) => {
         setNewTitle('')
         setNewAuthor('')
         setNewUrl('')
+
+        props.showNotification('Added new blog', 5)
     }
 
 
@@ -63,4 +66,15 @@ BlogForm.propTypes = {
     postBlog: PropTypes.func.isRequired
 }
 
-export default BlogForm
+const mapStateToProps = (state) => {return{}}
+
+const mapDispatchToProps = {
+  showNotification
+}
+
+const ConnectedBlogForm = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BlogForm) 
+
+export default ConnectedBlogForm

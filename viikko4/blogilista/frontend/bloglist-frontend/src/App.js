@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
 import blogService from './services/blogs'
 import userService from './services/users'
@@ -18,6 +19,8 @@ import './index.css'
 import ErrorNotification from './components/ErrorNotification'
 
 const App = () => {
+  const dispatch = useDispatch()
+
   const [blogs, setBlogs] = useState([])
 
   const blogFormRef = useRef()
@@ -149,8 +152,8 @@ const App = () => {
     return (
       <div>
         <Menu user={user} handleLogout={handleLogout} />
-        <SuccessNotification message={successMessage} />
-        <ErrorNotification message={errorMessage} />
+        <SuccessNotification />
+        <ErrorNotification />
         <Switch>
           <Route path='/users/:id'>
             <User user={userInfo} blogs={blogs}/>
