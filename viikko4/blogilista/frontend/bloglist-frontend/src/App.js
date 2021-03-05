@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import { initializeBlogs } from './reducers/blogReducer'
 
 import blogService from './services/blogs'
 import userService from './services/users'
@@ -20,6 +21,9 @@ import ErrorNotification from './components/ErrorNotification'
 
 const App = () => {
   const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   const [blogs, setBlogs] = useState([])
 
