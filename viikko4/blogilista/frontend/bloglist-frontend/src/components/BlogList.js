@@ -1,11 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 import Togglable from './Togglable'
 import BlogForm from './BlogForm'
 
-import { Table } from 'react-bootstrap'
+const BlogList = ({ blogFormRef }) => {
 
-const BlogList = ({ blogs, blogFormRef }) => {
+  const blogs = useSelector(state => state.blogs)
+
   return (
     <div>
       <h2>Blogs</h2>

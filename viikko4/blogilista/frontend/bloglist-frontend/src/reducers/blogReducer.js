@@ -1,6 +1,6 @@
 import blogService from '../services/blogs'
 
-const blogRedurer = (state = [], action) => {
+const blogReducer = (state = [], action) => {
   switch (action.type) {
     case 'LIKE':
       return action.data
@@ -46,9 +46,11 @@ export const deleteBlog = id => {
   return async dispatch => {
     const response = await blogService.deleteBlog(id)
     console.log("DELETE RESPONSE", response)
+    const updatedBlogs = await blogService.getAll()
+    const sorted = updatedBlogs.sort((a, b) => b.likes - a.likes)
     dispatch({
       type: 'DELETE_BLOG',
-      data: response
+      data: sorted
     })
   }
 }
@@ -64,4 +66,4 @@ export const initializeBlogs = () => {
   }
 }
 
-export default blogRedurer
+export default blogReducer

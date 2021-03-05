@@ -1,48 +1,37 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/userReducer'
 
 import blogService from './services/blogs'
-import userService from './services/users'
 
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
 import Blog from './components/Blog'
-import SuccessNotification from './components/SuccessNotification'
 import Menu from './components/Menu'
+import Notification from './components/Notification'
 import Users from './components/Users'
 import User from './components/User'
 
-
 import './index.css'
-import ErrorNotification from './components/ErrorNotification'
-
-
 
 const App = () => {
   const dispatch = useDispatch()
+  const localData = useSelector(state => state)
+  console.log("local data", localData)
+
+  const [user, setUser] = useState(null)
+  const blogFormRef = useRef()
+  const blogs = useSelector(state => state.blogs)
+  const users = useSelector(state => state.users)
+
   useEffect(() => {
     dispatch(initializeBlogs())
   }, [dispatch])
-
-  const [blogs, setBlogs] = useState([])
-
-  const blogFormRef = useRef()
-
-  const [user, setUser] = useState(null)
-  const [users, setUsers] = useState([])
-
   useEffect(() => {
-    userService.getAll().then(response => setUsers(response))
-  }, [])
-
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
-    )
-  }, [])
-
+    dispatch(initializeUsers())
+  }, [dispatch])
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -68,39 +57,34 @@ const App = () => {
         <LoginForm />
       </div>
     )
-  } else {
-    return (
-      <div>
-        <div class="menu">
-          <Menu />
-        </div>
-        <div class="container home">
-          <SuccessNotification />
-          <ErrorNotification />
-
-          <Switch>
-            <Route path='/users/:id'>
-              <User user={userInfo} blogs={blogs} />
-            </Route>
-            <Route path='/users'>
-              <Users users={users} />
-            </Route>
-            <Route path='/blogs/:id'>
-              <Blog blog={blogInfo} user={user} />
-            </Route>
-            <Route path='/blogs'>
-              <BlogList blogs={blogs} blogFormRef={blogFormRef} />
-            </Route>
-            <Route path='/'>
-              <BlogList blogs={blogs} blogFormRef={blogFormRef} />
-            </Route>
-          </Switch>
-        </div>
-      </div>
-    )
   }
-
-
+  return (
+    <div>
+      <div className="menu">
+        <Menu user={user} />
+      </div>
+      <div className="container home">
+        <Notification />
+        <Switch>
+          <Route path='/users/:id'>
+            <User user={userInfo} />
+          </Route>
+          <Route path='/users'>
+            <Users users={users} />
+          </Route>
+          <Route path='/blogs/:id'>
+            <Blog blog={blogInfo} user={user} />
+          </Route>
+          <Route path='/blogs'>
+            <BlogList blogFormRef={blogFormRef} />
+          </Route>
+          <Route path='/'>
+            <BlogList blogFormRef={blogFormRef} />
+          </Route>
+        </Switch>
+      </div>
+    </div>
+  )
 }
 
 export default App

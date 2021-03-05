@@ -4,10 +4,11 @@ import blogService from '../services/blogs'
 import { addLike } from '../reducers/blogReducer'
 import { deleteBlog } from '../reducers/blogReducer'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 const Blog = (props) => {
   const dispatch = useDispatch()
-
+  const history = useHistory()
   const [comments, setComments] = useState([])
   const [comment, setComment] = useState("")
 
@@ -31,6 +32,7 @@ const Blog = (props) => {
     const confirm = window.confirm(`DELETE BLOG?`)
     if (confirm) {
       dispatch(deleteBlog(id))
+      history.push('/')
     }
   }
 

@@ -7,12 +7,12 @@ const userReducer = (state = null, action) => {
     case 'LOGIN':
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(action.data))
       blogService.setToken(action.data.token)
-      userService.setUser(action.data)
       return action.data
     case 'LOGOUT':
       window.localStorage.clear()
       blogService.deleteToken()
-      userService.deleteUser()
+      return action.data
+    case 'INIT_USERS':
       return action.data
     default:
       return state
@@ -39,6 +39,17 @@ export const logout = () => {
     })
   }
 }
+
+export const initializeUsers = () => {
+  return async dispatch => {
+    const users = await userService.getAll()
+    dispatch({
+      type: 'INIT_USERS',
+      data: users
+    })
+  }
+}
+
 
 
 

@@ -1,6 +1,8 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
-const User = ({ user, blogs }) => {
+const User = ({user}) => {
+  const blogs = useSelector(state => state.blogs)
   if (!user) {
     return null
   }

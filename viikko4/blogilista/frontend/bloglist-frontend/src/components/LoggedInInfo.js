@@ -1,18 +1,21 @@
 import React from 'react'
 import { logout } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
-
-const LoggedInInfo = (props) => {
+const LoggedInInfo = ({user}) => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
-  const handleLogout = (event) => {
+  const handleLogout = async (event) => {
     event.preventDefault()
-    dispatch(logout())
+    await dispatch(logout())
+    history.push('/')
+    window.location.reload()
   }
 
   return (
-    <span>&emsp;User <i>{}</i> is logged in&nbsp;
+    <span>&emsp;<i>{user.name}</i> is logged in&nbsp;
       <button onClick={handleLogout}>logout</button>
     </span>
   )

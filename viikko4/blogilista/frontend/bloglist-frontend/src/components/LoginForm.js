@@ -1,26 +1,35 @@
-import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-
 import { login } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
-
+import { showNotification } from '../reducers/notificationReducer'
 import { Form, Button } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
+import Notification from './Notification'
 
 const LoginForm = (props) => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
-    dispatch(login(username, password))
-    setUsername('')
-    setPassword('')
+    try {
+      await dispatch(login(username, password))
+      history.push('/')
+      window.location.reload()
+    } catch {
+      dispatch(showNotification('Wrong username or password', 5))
+      setUsername('')
+      setPassword('')
+    }
+   
   }
 
   return (
-    <div class="container loginForm">
+    <div className="container loginForm">
       <h2>Log in to app from LoginForm</h2>
+      <Notification/>
       <Form onSubmit={handleLogin}>
         <Form.Group>
           <Form.Label>username</Form.Label>
@@ -35,20 +44,13 @@ const LoginForm = (props) => {
             value={password}
             name="Password"
             onChange={({ target }) => setPassword(target.value)} />
-          <div class="loginButton">
+          <div className="button">
             <Button variant="primary" type="submit">Login</Button>
           </div>
         </Form.Group>
       </Form>
     </div>
   )
-}
-LoginForm.propTypes = {
-  handleLogin: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  setUsername: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
 }
 
 

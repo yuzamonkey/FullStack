@@ -3,7 +3,7 @@ import LoggedInInfo from './LoggedInInfo'
 
 import { Nav, Navbar, FormControl, Form, Button } from 'react-bootstrap'
 
-const Menu = () => {
+const Menu = ({user}) => {
 
   return (
       <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
@@ -14,14 +14,13 @@ const Menu = () => {
             <Nav.Link href="/blogs">Blogs</Nav.Link>
             <Nav.Link href="/users">Users</Nav.Link>
             <Nav.Link>
-              <LoggedInInfo />
+              <LoggedInInfo user={user}/>
             </Nav.Link>
           </Nav>
           <Form inline>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
             <Button variant="outline-light">Search</Button>
           </Form>
-
         </Navbar.Collapse>
       </Navbar>
   )
