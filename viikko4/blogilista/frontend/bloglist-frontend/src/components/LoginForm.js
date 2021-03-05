@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import { login } from '../reducers/userReducer'
 import { connect } from 'react-redux'
 
+import { Form, Button } from 'react-bootstrap'
+
 const LoginForm = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -16,31 +18,27 @@ const LoginForm = (props) => {
   }
 
   return (
-    <div>
+    <div class="container loginForm">
       <h2>Log in to app from LoginForm</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-            <input
-            id="username"
+      <Form onSubmit={handleLogin}>
+        <Form.Group>
+          <Form.Label>username</Form.Label>
+          <Form.Control
             type="text"
+            name="username"
             value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-            <input
-            id="password"
+            onChange={({ target }) => setUsername(target.value)} />
+          <Form.Label>password</Form.Label>
+          <Form.Control
             type="password"
             value={password}
             name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button id="login-button" type="submit">login</button>
-      </form>
+            onChange={({ target }) => setPassword(target.value)} />
+          <div class="loginButton">
+            <Button variant="primary" type="submit">Login</Button>
+          </div>
+        </Form.Group>
+      </Form>
     </div>
   )
 }

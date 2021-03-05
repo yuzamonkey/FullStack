@@ -18,6 +18,8 @@ import User from './components/User'
 import './index.css'
 import ErrorNotification from './components/ErrorNotification'
 
+
+
 const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -63,32 +65,37 @@ const App = () => {
   if (!user) {
     return (
       <div>
-        <LoginForm/>
+        <LoginForm />
       </div>
     )
   } else {
     return (
       <div>
-        <Menu />
-        <SuccessNotification />
-        <ErrorNotification />
-        <Switch>
-          <Route path='/users/:id'>
-            <User user={userInfo} blogs={blogs} />
-          </Route>
-          <Route path='/users'>
-            <Users users={users} />
-          </Route>
-          <Route path='/blogs/:id'>
-            <Blog blog={blogInfo} user={user} />
-          </Route>
-          <Route path='/blogs'>
-            <BlogList blogs={blogs} blogFormRef={blogFormRef} />
-          </Route>
-          <Route path='/'>
-            <BlogList blogs={blogs} blogFormRef={blogFormRef} />
-          </Route>
-        </Switch>
+        <div class="menu">
+          <Menu />
+        </div>
+        <div class="container home">
+          <SuccessNotification />
+          <ErrorNotification />
+
+          <Switch>
+            <Route path='/users/:id'>
+              <User user={userInfo} blogs={blogs} />
+            </Route>
+            <Route path='/users'>
+              <Users users={users} />
+            </Route>
+            <Route path='/blogs/:id'>
+              <Blog blog={blogInfo} user={user} />
+            </Route>
+            <Route path='/blogs'>
+              <BlogList blogs={blogs} blogFormRef={blogFormRef} />
+            </Route>
+            <Route path='/'>
+              <BlogList blogs={blogs} blogFormRef={blogFormRef} />
+            </Route>
+          </Switch>
+        </div>
       </div>
     )
   }
