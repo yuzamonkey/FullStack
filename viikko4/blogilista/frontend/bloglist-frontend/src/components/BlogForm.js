@@ -1,25 +1,26 @@
-import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { addBlog } from '../reducers/blogReducer'
 import { showNotification } from '../reducers/notificationReducer'
-import { connect } from 'react-redux'
+
+import { useDispatch } from 'react-redux'
 
 import { Form, Button } from 'react-bootstrap'
 
 const BlogForm = (props) => {
+  const dispatch = useDispatch()
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const addBlog = (event) => {
+  const handleBlogSubmit = (event) => {
     event.preventDefault()
     const blogObject = {
       title: title,
       author: author,
       url: url
     }
-    props.addBlog(blogObject)
-    props.showNotification('Added new blog', 5)
+    dispatch(addBlog(blogObject))
+    dispatch(showNotification('Added new blog', 5))
     setTitle('')
     setAuthor('')
     setUrl('')
@@ -28,7 +29,7 @@ const BlogForm = (props) => {
 
   return (
     <div>
-      <Form onSubmit={addBlog}>
+      <Form onSubmit={handleBlogSubmit}>
         <Form.Group>
           <Form.Label>title</Form.Label>
           <Form.Control
@@ -57,23 +58,4 @@ const BlogForm = (props) => {
   )
 }
 
-BlogForm.propTypes = {
-  postBlog: PropTypes.func.isRequired
-}
-
-const mapStateToProps = (state) => {
-  return {
-  }
-}
-
-const mapDispatchToProps = {
-  addBlog,
-  showNotification
-}
-
-const ConnectedBlogForm = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BlogForm)
-
-export default ConnectedBlogForm
+export default BlogForm

@@ -2,17 +2,18 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 
 import { login } from '../reducers/userReducer'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { Form, Button } from 'react-bootstrap'
 
 const LoginForm = (props) => {
+  const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const handleLogin = (event) => {
     event.preventDefault()
-    props.login(username, password)
+    dispatch(login(username, password))
     setUsername('')
     setPassword('')
   }
@@ -51,21 +52,6 @@ LoginForm.propTypes = {
 }
 
 
-const mapStateToProps = (state) => {
-  return {
-  }
-}
-
-const mapDispatchToProps = {
-  login
-}
-
-const ConnectedLogin = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginForm)
-
-
-export default ConnectedLogin
+export default LoginForm
 
 

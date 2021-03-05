@@ -1,16 +1,14 @@
 import React from 'react'
-import userService from '../services/users'
 import { logout } from '../reducers/userReducer'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 
 const LoggedInInfo = (props) => {
-
-  console.log("USER", userService.getUser())
+  const dispatch = useDispatch()
 
   const handleLogout = (event) => {
     event.preventDefault()
-    props.logout()
+    dispatch(logout())
   }
 
   return (
@@ -20,20 +18,5 @@ const LoggedInInfo = (props) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-  }
-}
 
-const mapDispatchToProps = {
-  logout
-}
-
-const connectedLoggedInInfo = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoggedInInfo)
-
-
-
-export default connectedLoggedInInfo
+export default LoggedInInfo

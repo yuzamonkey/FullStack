@@ -3,9 +3,11 @@ import blogService from '../services/blogs'
 
 import { addLike } from '../reducers/blogReducer'
 import { deleteBlog } from '../reducers/blogReducer'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const Blog = (props) => {
+  const dispatch = useDispatch()
+
   const [comments, setComments] = useState([])
   const [comment, setComment] = useState("")
 
@@ -21,14 +23,14 @@ const Blog = (props) => {
     return null
   }
 
-  const addLike = (id) => {
-    props.addLike(id)
+  const handleLike = (id) => {
+    dispatch(addLike(id))
   }
 
-  const deleteBlog = (id) => {
+  const handleDeletion = (id) => {
     const confirm = window.confirm(`DELETE BLOG?`)
     if (confirm) {
-      props.deleteBlog(id)
+      dispatch(deleteBlog(id))
     }
   }
 
@@ -51,7 +53,7 @@ const Blog = (props) => {
     <div id="blog">
       <h2>{props.blog.title}, {props.blog.author}</h2>
       <p><a href={props.blog.url} onClick={handleLink}>{props.blog.url}</a> <br></br>
-      likes: <span className="likeCount">{props.blog.likes}</span> <button onClick={() => addLike(props.blog.id)}>like</button><br></br>
+      likes: <span className="likeCount">{props.blog.likes}</span> <button onClick={() => handleLike(props.blog.id)}>like</button><br></br>
       added by: {props.blog.user.name} <br></br></p>
 
       <h3>comments</h3>
@@ -65,28 +67,11 @@ const Blog = (props) => {
         {comments.map(c => <li key={c.id}>{c.comment}</li>)}
       </ul>
       {props.user.name === props.blog.user.name
-        ? <button onClick={() => deleteBlog(props.blog.id)}>delete</button>
+        ? <button onClick={() => handleDeletion(props.blog.id)}>delete</button>
         : null
       }
     </div>
   )
 
 }
-
-const mapStateToProps = (state) => {
-  return {
-
-  }
-}
-
-const mapDispatchToProps = {
-  addLike, 
-  deleteBlog
-}
-
-const ConnectedBlog = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Blog)
-
-export default ConnectedBlog
+export default Blog
