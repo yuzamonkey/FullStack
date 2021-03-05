@@ -21,7 +21,6 @@ const BlogForm = (props) => {
     setNewTitle('')
     setNewAuthor('')
     setNewUrl('')
-
   }
 
 
@@ -51,7 +50,6 @@ BlogForm.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-
   }
 }
 

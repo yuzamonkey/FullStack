@@ -30,7 +30,7 @@ const getComments = (id) => {
   return request.then(response => response.data)
 }
 
-const update = async (id, newObject) => {
+const addLike = async (id, newObject) => {
   return await axios.put(`${baseUrl}/${id}`, newObject)
 }
 
@@ -50,4 +50,4 @@ const deleteBlog = (id) => {
   return axios.delete(`${baseUrl}/${id}`, config)
 }
 
-export default { setToken, deleteToken, getAll, getById, createComment, getComments, update, create, deleteBlog }
+export default { setToken, deleteToken, getAll, getById, createComment, getComments, addLike, create, deleteBlog }

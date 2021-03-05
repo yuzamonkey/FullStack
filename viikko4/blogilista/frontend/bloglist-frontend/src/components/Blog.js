@@ -1,45 +1,60 @@
 import React, { useState, useEffect } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, addLike, deleteBlog, user }) => {
+import { addLike } from '../reducers/blogReducer'
+import { deleteBlog } from '../reducers/blogReducer'
+import { connect } from 'react-redux'
+import { checkPropTypes } from 'prop-types'
+
+const Blog = (props) => {
   const [comments, setComments] = useState([])
   const [comment, setComment] = useState("")
 
   useEffect(() => {
-    if (blog) {
+    if (props.blog) {
       blogService
-        .getComments(blog.id)
+        .getComments(props.blog.id)
         .then(response => setComments(response))
     }
-  }, [blog])
+  }, [props.blog])
 
-  if (!blog) {
+  if (!props.blog) {
     return null
+  }
+
+  const addLike = (id) => {
+    props.addLike(id)
+  }
+
+  const deleteBlog = (id) => {
+    const confirm = window.confirm(`DELETE BLOG?`)
+    if (confirm) {
+      props.deleteBlog(id)
+    }
   }
 
   const handleLink = e => {
     e.preventDefault()
-    window.location.replace(`https://${blog.url}`)
+    window.location.replace(`https://${props.blog.url}`)
   }
 
   const handleComment = (e) => {
     e.preventDefault()
-    console.log("SEND FORM", comment)
     const commentObject = {
       comment: comment
     }
-    blogService.createComment(blog.id, commentObject)
+    blogService.createComment(props.blog.id, commentObject)
     setComments(comments.concat(commentObject))
     setComment("")
   }
 
   return (
     <div id="blog">
-      <h2>{blog.title}, {blog.author}</h2>
-      <p><a href={blog.url} onClick={handleLink}>{blog.url}</a> <br></br>
-      likes: <span className="likeCount">{blog.likes}</span> <button onClick={() => addLike(blog)}>like</button><br></br>
-      added by: {blog.user.name} <br></br></p>
-      
+      <h2>{props.blog.title}, {props.blog.author}</h2>
+      <p><a href={props.blog.url} onClick={handleLink}>{props.blog.url}</a> <br></br>
+      likes: <span className="likeCount">{props.blog.likes}</span> <button onClick={() => addLike(props.blog.id)}>like</button><br></br>
+      added by: {props.blog.user.name} <br></br></p>
+
       <h3>comments</h3>
       <div>
         <form onSubmit={handleComment}>
@@ -48,15 +63,31 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
         </form>
       </div>
       <ul>
-        {comments.map(c => <li>{c.comment}</li>)}
+        {comments.map(c => <li key={c.id}>{c.comment}</li>)}
       </ul>
-      {/* {user.name === blog.user.name
-        ? <button onClick={deleteBlog} value={blog.id}>delete</button>
+      {props.user.name === props.blog.user.name
+        ? <button onClick={() => deleteBlog(props.blog.id)}>delete</button>
         : null
-      } */}
+      }
     </div>
   )
 
 }
 
-export default Blog
+const mapStateToProps = (state) => {
+  return {
+
+  }
+}
+
+const mapDispatchToProps = {
+  addLike, 
+  deleteBlog
+}
+
+const ConnectedBlog = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Blog)
+
+export default ConnectedBlog

@@ -6,6 +6,8 @@ const blogRedurer = (state = [], action) => {
       return action.data
     case 'ADD_BLOG':
       return state.concat(action.data)
+    case 'DELETE_BLOG':
+      return action.data
     case 'INIT_BLOGS':
       return action.data
     default:
@@ -18,13 +20,13 @@ export const addLike = id => {
     const blogs = await blogService.getAll()
     const blogToChange = blogs.find(a => a.id === id)
     const changedBlog = {
-      ...blogToChange, votes: blogToChange.votes + 1
+      ...blogToChange, likes: blogToChange.likes + 1
     }
-    await blogService.addVote(id, changedBlog)
+    await blogService.addLike(id, changedBlog)
     const updatedBlogs = await blogService.getAll()
-    const sorted = updatedBlogs.sort((a,b) => b.votes - a.votes)
+    const sorted = updatedBlogs.sort((a,b) => b.likes - a.likes)
     dispatch({
-      type: 'VOTE',
+      type: 'LIKE',
       data: sorted
     })
   }
@@ -36,6 +38,17 @@ export const addBlog = content => {
     dispatch({
       type: 'ADD_BLOG',
       data: newBlog
+    })
+  }
+}
+
+export const deleteBlog = id => {
+  return async dispatch => {
+    const response = await blogService.deleteBlog(id)
+    console.log("DELETE RESPONSE", response)
+    dispatch({
+      type: 'DELETE_BLOG',
+      data: response
     })
   }
 }

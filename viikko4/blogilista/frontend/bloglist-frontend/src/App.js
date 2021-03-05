@@ -29,14 +29,13 @@ const App = () => {
 
   const blogFormRef = useRef()
 
-  const [successMessage, setSuccessMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [users, setUsers] = useState([])
-  
+
   useEffect(() => {
     userService.getAll().then(response => setUsers(response))
   }, [])
@@ -91,66 +90,30 @@ const App = () => {
     }
   }
 
-  const addBlog = async (blog) => {
-    try {
-      blogFormRef.current.toggleVisibility()
-      await blogService.create(blog)
-      const all = await blogService.getAll()
-      setBlogs(all.sort((a, b) => b.likes - a.likes))
-      setSuccessMessage(`New blog '${blog.title}' added`)
-      setTimeout(() => {
-        setSuccessMessage(null)
-      }, 5000)
-    } catch (exception) {
-      setErrorMessage('Could not send blog')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-    }
-  }
-
-  const addLike = async (blog) => {
-    blog.likes += 1
-    await blogService.update(blog.id, blog)
-    const all = await blogService.getAll()
-    setBlogs(all.sort((a, b) => b.likes - a.likes))
-  }
-
-  const deleteBlog = (event) => {
-    event.preventDefault()
-    const blogId = event.target.value
-    console.log(blogId)
-    const confirm = window.confirm(`DELETE BLOG?`)
-    if (confirm) {
-      console.log("DELETE CONFIRMED")
-      blogService.deleteBlog(blogId).then(response => {
-        blogService.getAll().then(blogs =>
-          setBlogs(blogs.sort((a, b) => b.likes - a.likes))
-        )
-      })
-    }
-  }
 
   const userMatch = useRouteMatch('/users/:id')
-  const userInfo = userMatch 
-  ? users.find(user => user.id === userMatch.params.id)
-  : null
-  
+  const userInfo = userMatch
+    ? users.find(user => user.id === userMatch.params.id)
+    : null
+
   const blogMatch = useRouteMatch('/blogs/:id')
-  const blogInfo = blogMatch 
-  ? blogs.find(blog => blog.id === blogMatch.params.id)
-  : null
+  const blogInfo = blogMatch
+    ? blogs.find(blog => blog.id === blogMatch.params.id)
+    : null
 
   if (!user) {
     return (
-      <LoginForm
-        handleLogin={handleLogin}
-        username={username}
-        setUsername={setUsername}
-        password={password}
-        setPassword={setPassword}
-        errorMessage={errorMessage}
-      />
+      <div>
+        <ErrorNotification />
+        <LoginForm
+          handleLogin={handleLogin}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+          errorMessage={errorMessage}
+        />
+      </div>
     )
   } else {
     return (
@@ -160,19 +123,19 @@ const App = () => {
         <ErrorNotification />
         <Switch>
           <Route path='/users/:id'>
-            <User user={userInfo} blogs={blogs}/>
+            <User user={userInfo} blogs={blogs} />
           </Route>
           <Route path='/users'>
-            <Users users={users}/>
+            <Users users={users} />
           </Route>
           <Route path='/blogs/:id'>
-            <Blog blog={blogInfo} addLike={addLike} deleteBlog={deleteBlog} user={user} />
+            <Blog blog={blogInfo} user={user} />
           </Route>
           <Route path='/blogs'>
-            <BlogList blogs={blogs} addBlog={addBlog} blogFormRef={blogFormRef}/>
+            <BlogList blogs={blogs} blogFormRef={blogFormRef} />
           </Route>
           <Route path='/'>
-            <BlogList blogs={blogs} addBlog={addBlog} blogFormRef={blogFormRef}/>
+            <BlogList blogs={blogs} blogFormRef={blogFormRef} />
           </Route>
         </Switch>
       </div>
