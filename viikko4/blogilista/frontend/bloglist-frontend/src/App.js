@@ -18,8 +18,6 @@ import './index.css'
 
 const App = () => {
   const dispatch = useDispatch()
-  const localData = useSelector(state => state)
-  console.log("local data", localData)
 
   const [user, setUser] = useState(null)
   const blogFormRef = useRef()

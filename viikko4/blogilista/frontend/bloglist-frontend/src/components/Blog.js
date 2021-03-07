@@ -24,6 +24,14 @@ const Blog = (props) => {
     return null
   }
 
+  const getUrlWithProtocol = (url) => {
+    if (String(url).includes('://')) {
+      return url
+    } else {
+      return `https://${url}`
+    }
+  }
+
   const handleLike = (id) => {
     dispatch(addLike(id))
   }
@@ -34,11 +42,6 @@ const Blog = (props) => {
       dispatch(deleteBlog(id))
       history.push('/')
     }
-  }
-
-  const handleLink = e => {
-    e.preventDefault()
-    window.location.replace(`https://${props.blog.url}`)
   }
 
   const handleComment = (e) => {
@@ -54,7 +57,7 @@ const Blog = (props) => {
   return (
     <div id="blog">
       <h2>{props.blog.title}, {props.blog.author}</h2>
-      <p><a href={props.blog.url} onClick={handleLink}>{props.blog.url}</a> <br></br>
+      <p><a href={getUrlWithProtocol(props.blog.url)}>{props.blog.url}</a> <br></br>
       likes: <span className="likeCount">{props.blog.likes}</span> <button onClick={() => handleLike(props.blog.id)}>like</button><br></br>
       added by: {props.blog.user.name} <br></br></p>
 

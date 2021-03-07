@@ -23,13 +23,12 @@ const LoginForm = (props) => {
       setUsername('')
       setPassword('')
     }
-   
   }
 
   return (
     <div className="container loginForm">
       <h2>Log in to app from LoginForm</h2>
-      <Notification/>
+      <Notification />
       <Form onSubmit={handleLogin}>
         <Form.Group>
           <Form.Label>username</Form.Label>
