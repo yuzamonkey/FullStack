@@ -3,7 +3,7 @@ import { logout } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-const LoggedInInfo = ({user}) => {
+const LoggedInInfo = ({ user }) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
