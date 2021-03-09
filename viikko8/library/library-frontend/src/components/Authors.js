@@ -36,10 +36,9 @@ const Authors = (props) => {
               <td>{a.bookCount}</td>
             </tr>
           )}
-          <BirthyearForm authorsNames={authors.map(a => a.name)}/>
-
         </tbody>
       </table>
+      <BirthyearForm authorsNames={authors.map(a => a.name)} />
     </div>
   )
 }
