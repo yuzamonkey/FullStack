@@ -4,11 +4,15 @@ import { ALL_AUTHORS } from '../queries/queries'
 
 const Authors = (props) => {
   const result = useQuery(ALL_AUTHORS)
-  const authors = result.data.allAuthors
 
+  if (result.loading) {
+    return <div>Loading</div>
+  }
   if (!props.show) {
     return null
   }
+
+  const authors = result.data.allAuthors
 
   return (
     <div>
@@ -33,7 +37,6 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-
     </div>
   )
 }
