@@ -8,7 +8,7 @@ const MONGODB_URI = process.env.MONGODB_URI
 
 console.log('connecting to', MONGODB_URI)
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true})
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(() => {
     console.log('connected to MongoDB')
   })
@@ -65,46 +65,59 @@ const resolvers = {
     bookCount: (root) => Book.find({}).filter(book => book.author === root.name).length
   },
   Mutation: {
-    addAuthor: (root, args) => {
+    addAuthor: async (root, args) => {
       console.log("ARGS", args)
-      const author = new Author({...args})
+      const author = new Author({ ...args })
       console.log("AUTHOR", author)
-      return author.save()
+      try {
+        await author.save()
+      } catch (error) {
+        throw new UserInputError(error.message, { invalidArgs: args })
+      }
+      return author
     },
     addBook: async (root, args) => {
       console.log("ADD BOOK CALLED WITH ARGS", args)
       const author = args.author
-      const isfound = await Author.find({name: author})
+      const isfound = await Author.find({ name: author })
       let authorId = null
       if (isfound.length === 0) {
         console.log("NO AUTHOR", author)
-        const newAuthor = new Author({name: author})
-        const returnvalue = await newAuthor.save()
-        authorId = returnvalue._id
+        const newAuthor = new Author({ name: author })
+        try {
+          const returnvalue = await newAuthor.save()
+          authorId = returnvalue._id
+        } catch (error) {
+          throw new UserInputError(error.message, { invalidArgs: args })
+        }
       } else {
         console.log("AUTHOR FOUND, ID", isfound[0]._id)
         authorId = isfound[0]._id
       }
-      const book = new Book({ ...args, author: await Author.findById(authorId)})
+      const book = new Book({ ...args, author: await Author.findById(authorId) })
       console.log("NEW BOOK", book)
-      return book.save()
-      /*
-      books = books.concat(book)
-      const authorNames = authors.map(author => author.name)
-      if (!authorNames.includes(book.author)) {
-        const newAuthorObject = {
-          name: book.author,
-          id: uuid()
-        }
-        authors = authors.concat(newAuthorObject)
+      try {
+        await book.save()
+        return book
+      } catch (error) {
+        throw new UserInputError(error.message, { invalidArgs: args })
       }
-      return book 
-      */
+
     },
     editAuthor: async (root, args) => {
-      const author = await Author.findOne({name: args.name})
-      author.born = args.born
-      return author.save()
+      try {
+        const author = await Author.findOne({ name: args.name })
+        author.born = args.setBornTo
+        try {
+          await author.save()
+          return author
+        } catch (error) {
+          throw new UserInputError(error.message, { invalidArgs: args })
+        }
+      } catch (error) {
+        throw new UserInputError(error.message, { invalidArgs: args })
+      }
+      
     }
   }
 }
@@ -127,7 +140,7 @@ let authors = [
     id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
     born: 1952,
   },
-  
+
   {
     name: 'Martin Fowler',
     id: "afa5b6f0-344d-11e9-a414-719c6709cf3e",
