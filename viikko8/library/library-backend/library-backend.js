@@ -59,11 +59,7 @@ const resolvers = {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allAuthors: () => Author.find({}),
-    allBooks: (root, args) => {
-      const books = Book.find({})
-      console.log("BOOKS",typeof(books))
-      return books
-    }
+    allBooks: () => Book.find({})
   },
   Author: {
     bookCount: (root) => Book.find({}).filter(book => book.author === root.name).length
