@@ -1,18 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
-import { ALL_BOOKS_BY_GENRE } from '../queries/queries'
+import { ALL_BOOKS_BY_GENRE, ALL_BOOKS } from '../queries/queries'
 import GenreButtons from './GenreButtons'
 
 const Books = (props) => {
 
   const [genre, setGenre] = useState(null)
 
-  const [getBooksByGenre, booksByGenreResult] = useLazyQuery(ALL_BOOKS_BY_GENRE)
+  const [getBooksByGenre, booksByGenreResult] = useLazyQuery(ALL_BOOKS_BY_GENRE, {
+    update: (store, response) => {
+      const dataInStore = store.readQuery({ query: ALL_BOOKS })
+      store.writeQuery({
+        query: ALL_BOOKS,
+        data: {
+          ...dataInStore,
+          allBooks: [ ...dataInStore.allBooks]
+        }
+      })
+    }
+  })
   const [booksByGenre, setBooksByGenre] = useState([])
 
   const handleGenreChange = async (genre) => {
     await getBooksByGenre({ variables: { genre: genre } })
     setGenre(genre)
+
   }
 
   useEffect(() => {

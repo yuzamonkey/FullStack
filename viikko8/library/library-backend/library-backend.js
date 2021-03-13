@@ -83,9 +83,10 @@ const resolvers = {
     authorCount: () => Author.collection.countDocuments(),
     allAuthors: () => Author.find({}),
     allBooks: async (root, args) => {
+      console.log(Object.entries(args).length === 0)
       const allBooks = await Book.find({})
       const genre = args.genre
-      if (genre === '') {
+      if (genre === '' || Object.entries(args).length === 0) {
         return allBooks
       } else {
         return allBooks.filter(book => book.genres.includes(genre))

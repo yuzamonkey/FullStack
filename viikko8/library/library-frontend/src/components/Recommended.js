@@ -6,9 +6,10 @@ const Recommended = (props) => {
   const result = useQuery(ME)
   const bookResult = useQuery(ALL_BOOKS)
 
-  if (result.loading) {
+  if (result.loading || bookResult.loading) {
     return (<div>loading...</div>)
   }
+
   if (!props.show) {
     return null
   }
