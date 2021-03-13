@@ -9,7 +9,7 @@ import { useApolloClient } from '@apollo/client'
 const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
-  const [error, setError] = useState('')
+  const [, setError] = useState('')
   const client = useApolloClient()
 
   const handleLogout = (event) => {

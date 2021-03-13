@@ -8,7 +8,7 @@ const GenreButtons = (props) => {
 
   const handleGenreChange = (event) => {
     event.preventDefault()
-    props.setGenre(event.target.value)
+    props.handleGenreChange(event.target.value)
 
   }
 
@@ -18,7 +18,7 @@ const GenreButtons = (props) => {
     return (
       <div>
         <h4>Select genre</h4>
-        {genres.map(genre => <button onClick={handleGenreChange} value={genre}>{genre}</button>)}
+        {genres.map(genre => <button key={genre} onClick={handleGenreChange} value={genre}>{genre}</button>)}
         <button onClick={handleGenreChange} value={''}>all genres</button>
       </div>
     )

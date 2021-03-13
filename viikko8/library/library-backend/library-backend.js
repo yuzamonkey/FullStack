@@ -82,7 +82,15 @@ const resolvers = {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allAuthors: () => Author.find({}),
-    allBooks: () => Book.find({}),
+    allBooks: async (root, args) => {
+      const allBooks = await Book.find({})
+      const genre = args.genre
+      if (genre === '') {
+        return allBooks
+      } else {
+        return allBooks.filter(book => book.genres.includes(genre))
+      }
+    },
     allGenres: async () => {
       const allBooks = await Book.find({})
       const allGenres = allBooks.reduce((genresSoFar, book) => {
@@ -95,15 +103,15 @@ const resolvers = {
       }, [])
       return allGenres.sort()
     },
-    me: (root, args, context) => { 
-      return context.currentUser 
+    me: (root, args, context) => {
+      return context.currentUser
     }
   },
   Author: {
     bookCount: async (root) => {
-      const author = await Author.findOne({name: root.name})
+      const author = await Author.findOne({ name: root.name })
       const authorId = author._id
-      const allAuthorsBooks = await Book.find({author: authorId})
+      const allAuthorsBooks = await Book.find({ author: authorId })
       return allAuthorsBooks.length
     }
   },
