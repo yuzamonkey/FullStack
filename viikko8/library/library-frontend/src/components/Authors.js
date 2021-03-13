@@ -13,7 +13,7 @@ const Authors = (props) => {
     return null
   }
 
-  const authors = result.data.allAuthors
+  const authors = result.data.allAuthors 
 
   return (
     <div>
