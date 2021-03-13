@@ -47,6 +47,7 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    allGenres: [String!]!
     me: User
   }
 
@@ -82,6 +83,18 @@ const resolvers = {
     authorCount: () => Author.collection.countDocuments(),
     allAuthors: () => Author.find({}),
     allBooks: () => Book.find({}),
+    allGenres: async () => {
+      const allBooks = await Book.find({})
+      const allGenres = allBooks.reduce((genresSoFar, book) => {
+        const removedDuplicates = book.genres.filter(genre => {
+          if (!genresSoFar.includes(genre)) {
+            return genre
+          }
+        })
+        return genresSoFar.concat(removedDuplicates)
+      }, [])
+      return allGenres.sort()
+    },
     me: (root, args, context) => { return context.currentUser }
   },
   Author: {
