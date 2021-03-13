@@ -113,10 +113,13 @@ const resolvers = {
     },
 
     login: async (root, args) => {
+      console.log("LOGIN CALLED", args.username)
       const user = await User.findOne({ username: args.username })
       if (!user || args.password !== 'secret') {
+        console.log("WRONG CREDENTIOALS")
         throw new UserInputError("wrong credentials")
       }
+      console.log("LOGIN SUCCESS")
       const userForToken = {
         username: user.username,
         id: user._id
