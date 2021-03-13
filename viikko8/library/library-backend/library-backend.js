@@ -95,7 +95,9 @@ const resolvers = {
       }, [])
       return allGenres.sort()
     },
-    me: (root, args, context) => { return context.currentUser }
+    me: (root, args, context) => { 
+      return context.currentUser 
+    }
   },
   Author: {
     bookCount: async (root) => {
@@ -115,8 +117,7 @@ const resolvers = {
   Mutation: {
     //USER
     createUser: (root, args) => {
-      const user = new User({ username: args.username })
-
+      const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
       return user.save()
         .catch(error => {
           throw new UserInputError(error.message, {
@@ -128,6 +129,7 @@ const resolvers = {
     login: async (root, args) => {
       console.log("LOGIN CALLED", args.username)
       const user = await User.findOne({ username: args.username })
+      console.log("USER", user, "IS LOGGING IN")
       if (!user || args.password !== 'secret') {
         console.log("WRONG CREDENTIOALS")
         throw new UserInputError("wrong credentials")
