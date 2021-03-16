@@ -1,7 +1,8 @@
 
+
 type bmiResult = "Underweight" | "Normal (healthy weight)" | "Overweight"
 
-const calculateBmi = (height: number, weight: number): bmiResult => {
+export const calculateBmi = (height: number, weight: number): bmiResult => {
   const result = weight / (height / 100 * height / 100);
   if (result < 18.5) {
     return "Underweight";
@@ -22,3 +23,4 @@ try {
 } catch (e) {
   console.log("ERROR:", e.message)
 }
+
