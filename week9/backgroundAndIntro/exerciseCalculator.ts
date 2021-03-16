@@ -1,13 +1,3 @@
-
-/*
-the number of days
-the number of training days
-the original target value
-the calculated average time
-boolean value describing if the target was reached
-a rating between the numbers 1-3 that tells how well the hours are met. You can decide on the metric on your own.
-a text value explaining the rating
-*/
 interface Result {
   periodLength: number,
   trainingDays: number,
@@ -18,10 +8,10 @@ interface Result {
   average: number
 }
 
-const calculate = (hoursTrainedDuringWeek: Array<number>, target: number): Result => {
+export const calculate = (hoursTrainedDuringWeek: Array<number>, target: number): Result => {
   const periodLength = hoursTrainedDuringWeek.length;
   const trainingDays = hoursTrainedDuringWeek.filter(h => h != 0).length;
-  const average = hoursTrainedDuringWeek.reduce((sum, number) => sum += number, 0) / periodLength;
+  const average = hoursTrainedDuringWeek.reduce((sum, number) => sum += Number(number), 0) / periodLength;
   const resultObject = {
     periodLength: periodLength,
     trainingDays: trainingDays,

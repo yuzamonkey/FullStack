@@ -1,5 +1,3 @@
-
-
 type bmiResult = "Underweight" | "Normal (healthy weight)" | "Overweight"
 
 export const calculateBmi = (height: number, weight: number): bmiResult => {
