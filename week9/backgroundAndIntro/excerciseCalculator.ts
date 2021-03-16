@@ -47,5 +47,23 @@ const calculate = (hoursTrainedDuringWeek: Array<number>, target: number): Resul
   return resultObject
 }
 
-const hoursTrainedDuringWeek = [3, 0, 2, 4.5, 0, 3, 1];
-console.log(calculate(hoursTrainedDuringWeek, 2));
+try {
+  const target: number = Number(process.argv[2])
+  if (isNaN(target)) {
+    throw new Error("First value was not a number")
+  }
+  let hours: Array<number> = []
+  let index = 3
+  while (process.argv[index]) {
+    const value: number = Number(process.argv[index])
+    if (isNaN(value)) {
+      throw new Error("At least one of the given values was not a number")
+    } else {
+      hours.push(value)
+      index++
+    }
+  }
+  console.log(calculate(hours, target));
+} catch (e) {
+  console.log("ERROR:", e.message)
+}
