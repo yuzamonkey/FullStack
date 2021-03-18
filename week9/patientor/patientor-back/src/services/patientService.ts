@@ -1,6 +1,8 @@
+
 import patientData from '../../data/patients.json';
 
-import { NonSensitivePatientEntry } from '../types';
+import { PatientEntry, NonSensitivePatientEntry, NewPatientEntry } from '../types';
+import {v1 as uuid} from 'uuid'
 
 const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
   return patientData.map(({ id, name, dateOfBirth, gender, occupation }) => ({
@@ -15,7 +17,17 @@ const findById = (id: string): NonSensitivePatientEntry | undefined => {
   return entry;
 }
 
+const addPatient = (entry: NewPatientEntry): PatientEntry => {
+  const newPatientEntry = {
+    id: uuid(),
+    ...entry
+  }
+  patientData.concat(newPatientEntry);
+  return newPatientEntry;
+}
+
 export default {
   getNonSensitiveEntries,
-  findById
+  findById,
+  addPatient
 };
