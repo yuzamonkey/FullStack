@@ -8,6 +8,14 @@ const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
   }));
 };
 
+const findById = (id: string): NonSensitivePatientEntry | undefined => {
+  const entry = patientData.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+    id, name, dateOfBirth, gender, occupation
+  })).find(p => p.id === id);
+  return entry;
+}
+
 export default {
-  getNonSensitiveEntries
+  getNonSensitiveEntries,
+  findById
 };

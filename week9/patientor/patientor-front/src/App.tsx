@@ -36,7 +36,7 @@ const App = () => {
           </Button>
           <Divider hidden />
           <Switch>
-            <Route path="/">
+            <Route path="/patients/:id">
               <PatientListPage />
             </Route>
           </Switch>
