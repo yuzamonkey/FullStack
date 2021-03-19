@@ -18,3 +18,5 @@ export interface Patient {
   ssn?: string;
   dateOfBirth?: string;
 }
+
+
