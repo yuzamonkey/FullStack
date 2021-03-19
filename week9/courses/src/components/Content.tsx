@@ -1,16 +1,16 @@
 import React from 'react'
+import Part from './Part'
+import { CoursePart } from '../types'
 
-interface Course {
-  name: string,
-  exerciseCount: number
-}
 interface ContentProps {
-  courses: Array<Course>;
+  courses: CoursePart[];
 }
+
 const Content = ({ courses }: ContentProps): JSX.Element => {
+  console.log("COURSES IN CONTENT", courses)
   return (
     <div>
-      {courses.map(c => <p key={c.name}>{c.name} {c.exerciseCount}</p>)}
+      {courses.map(course => <Part key={course.name} course={course}/>)}
     </div>
   )
 }
