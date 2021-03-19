@@ -6,13 +6,13 @@ import {v1 as uuid} from 'uuid'
 
 const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
   return patientData.map(({ id, name, dateOfBirth, gender, occupation }) => ({
-    id, name, dateOfBirth, gender, occupation
+    id, name, dateOfBirth, gender, occupation, entries: []
   }));
 };
 
 const findById = (id: string): NonSensitivePatientEntry | undefined => {
   const entry = patientData.map(({ id, name, dateOfBirth, gender, occupation }) => ({
-    id, name, dateOfBirth, gender, occupation
+    id, name, dateOfBirth, gender, occupation, entries: []
   })).find(p => p.id === id);
   return entry;
 }

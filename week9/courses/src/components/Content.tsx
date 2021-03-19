@@ -7,7 +7,6 @@ interface ContentProps {
 }
 
 const Content = ({ courses }: ContentProps): JSX.Element => {
-  console.log("COURSES IN CONTENT", courses)
   return (
     <div>
       {courses.map(course => <Part key={course.name} course={course}/>)}
