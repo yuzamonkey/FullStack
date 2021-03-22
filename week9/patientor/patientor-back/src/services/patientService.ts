@@ -1,20 +1,24 @@
 
-import patientData from '../../data/patients.json';
+import patientData from '../../data/patients';
 
-import { PatientEntry, NonSensitivePatientEntry, NewPatientEntry } from '../types';
-import {v1 as uuid} from 'uuid'
+import { SinglePatientEntry, PatientEntry, NewPatientEntry, PublicPatient } from '../types';
+import { v1 as uuid } from 'uuid'
 
-const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
-  return patientData.map(({ id, name, dateOfBirth, gender, occupation }) => ({
-    id, name, dateOfBirth, gender, occupation, entries: []
+const getNonSensitiveEntries = (): PublicPatient[] => {
+  //console.log("PATIENT DATA", patientData)
+  return patientData.map(({ id, name, dateOfBirth, gender, occupation }: PublicPatient) => ({
+    id, name, dateOfBirth, gender, occupation
   }));
 };
 
-const findById = (id: string): PatientEntry | undefined => {
-  const entry = patientData.map(({ id, name, ssn, dateOfBirth, gender, occupation }) => ({
-    id, name, ssn, dateOfBirth, gender, occupation, entries: []
-  })).find(p => p.id === id);
-  return entry;
+const findById = (id: string): SinglePatientEntry | undefined => {
+  //console.log("PATIENT DATA", patientData)
+  const entry = patientData.map(({ id, name, ssn, dateOfBirth, gender, occupation, entries }: SinglePatientEntry) => ({
+    id, name, ssn, dateOfBirth, gender, occupation, entries
+  }));
+  const patient = entry.find((p: SinglePatientEntry) => p.id === id);
+  //console.log("PATIENT BY ID", patient)
+  return patient;
 }
 
 const addPatient = (entry: NewPatientEntry): PatientEntry => {
@@ -22,7 +26,7 @@ const addPatient = (entry: NewPatientEntry): PatientEntry => {
     id: uuid(),
     ...entry
   }
-  patientData.concat(newPatientEntry);
+  patientData.push(newPatientEntry);
   return newPatientEntry;
 }
 
