@@ -44,6 +44,9 @@ const PatientPage = () => {
       <p key={entry.id}>
         {entry.date} <i>{entry.description}</i>
         <ul>
+          {entry.diagnosisCodes
+          ? entry.diagnosisCodes.map(code => <li key={code}>{code}</li>)
+          : null}
         </ul>
       </p>)
     : null
