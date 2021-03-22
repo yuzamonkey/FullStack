@@ -12,8 +12,8 @@ import PatientListPage from "./PatientListPage";
 
 const App = () => {
   const [, dispatch] = useStateValue();
-  const [diagnoses, setDiagnoses] = React.useState<Diagnosis[]>([]);
-  
+  const [, setDiagnoses] = React.useState<Diagnosis[]>([]);
+
   React.useEffect(() => {
     const getDiagnoseCodes = async () => {
       try {
@@ -25,6 +25,7 @@ const App = () => {
     };
     void getDiagnoseCodes();
   }, []);
+  
   React.useEffect(() => {
     //void axios.get<void>(`${apiBaseUrl}/ping`);
     const fetchPatientList = async () => {
@@ -52,7 +53,7 @@ const App = () => {
           <Divider hidden />
           <Switch>
             <Route path="/patients/:id">
-              <PatientPage diagnoses={diagnoses}/>
+              <PatientPage />
             </Route>
             <Route path="/patients">
               <PatientListPage />
