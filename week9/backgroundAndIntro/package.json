@@ -9,7 +9,8 @@
     "exerciseCalc": "ts-node excerciseCalculator.ts",
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts",
-    "lint": "eslint --ext .ts ."
+    "lint": "eslint --ext .ts .",
+    "lint-fix": "eslint --ext .ts . --fix"
   },
   "keywords": [],
   "author": "",

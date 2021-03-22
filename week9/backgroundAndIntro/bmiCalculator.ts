@@ -1,4 +1,4 @@
-type bmiResult = "Underweight" | "Normal (healthy weight)" | "Overweight"
+type bmiResult = "Underweight" | "Normal (healthy weight)" | "Overweight";
 
 export const calculateBmi = (height: number, weight: number): bmiResult => {
   const result = weight / (height / 100 * height / 100);
@@ -9,16 +9,16 @@ export const calculateBmi = (height: number, weight: number): bmiResult => {
   } else {
     return "Normal (healthy weight)";
   }
-}
+};
 
 try {
-  const height: number = Number(process.argv[2])
-  const weight: number = Number(process.argv[3])
+  const height = Number(process.argv[2]);
+  const weight = Number(process.argv[3]);
   if (isNaN(height) || isNaN(weight)) {
-    throw new Error("Height or weight was not given or not a number")
+    throw new Error("Height or weight was not given or not a number");
   }
   console.log(calculateBmi(height, weight));
 } catch (e) {
-  console.log("ERROR:", e.message)
+  console.log("ERROR:", e.message);
 }
 

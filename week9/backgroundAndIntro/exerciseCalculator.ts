@@ -20,40 +20,40 @@ export const calculate = (hoursTrainedDuringWeek: Array<number>, target: number)
     ratingDescription: "",
     target: target,
     average: average
-  }
+  };
   if (average >= target) {
     resultObject.rating = 3;
-    resultObject.ratingDescription = "Well done"
+    resultObject.ratingDescription = "Well done";
   } else {
     resultObject.success = false;
     if (target - average < 0.5) {
       resultObject.rating = 2;
-      resultObject.ratingDescription = "Still left something on the table"
+      resultObject.ratingDescription = "Still left something on the table";
     } else {
       resultObject.rating = 1;
-      resultObject.ratingDescription = "Target was not reached"
+      resultObject.ratingDescription = "Target was not reached";
     }
   }
-  return resultObject
-}
+  return resultObject;
+};
 
 try {
-  const target: number = Number(process.argv[2])
+  const target = Number(process.argv[2]);
   if (isNaN(target)) {
-    throw new Error("First value was not a number")
+    throw new Error("First value was not a number");
   }
-  let hours: Array<number> = []
-  let index = 3
+  const hours: Array<number> = [];
+  let index = 3;
   while (process.argv[index]) {
-    const value: number = Number(process.argv[index])
+    const value = Number(process.argv[index]);
     if (isNaN(value)) {
-      throw new Error("At least one of the given values was not a number")
+      throw new Error("At least one of the given values was not a number");
     } else {
-      hours.push(value)
-      index++
+      hours.push(value);
+      index++;
     }
   }
   console.log(calculate(hours, target));
 } catch (e) {
-  console.log("ERROR:", e.message)
+  console.log("ERROR:", e.message);
 }
