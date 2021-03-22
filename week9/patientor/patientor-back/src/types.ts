@@ -43,7 +43,7 @@ export interface HospitalEntry extends BaseEntry {
   }
 }
 
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
 }
@@ -54,6 +54,10 @@ export type Entry =
   | HealthCheckEntry;
 
 
+// Define special omit for unions
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+export type HealthEntry = UnionOmit<Entry, ''>;
+
 //Patient entries
 export interface PatientEntry {
   id: string;
@@ -62,16 +66,14 @@ export interface PatientEntry {
   ssn: string;
   gender: string;
   occupation: string;
-  entries: Array<Entry>;
+  entries: Array<HealthEntry>;
 }
 
-// Define special omit for unions
-type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 // Define Entry without the 'id' property
 export type SinglePatientEntry = UnionOmit<PatientEntry, ''>; //Why does this work?
 
-export type PublicPatient = Omit<PatientEntry, 'ssn' | 'entries'>;
+export type PublicPatient = UnionOmit<PatientEntry, 'ssn' | 'entries'>;
 
-export type NonSensitivePatientEntry = Omit<PatientEntry, 'ssn'>;
+export type NonSensitivePatientEntry = UnionOmit<PatientEntry, 'ssn'>;
 
-export type NewPatientEntry = Omit<PatientEntry, 'id'>;
+export type NewPatientEntry = UnionOmit<PatientEntry, 'id'>;

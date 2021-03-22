@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { apiBaseUrl } from "../constants";
 import { useStateValue, setPatient } from "../state";
-import { Patient } from "../types";
+import { SinglePatientEntry } from "../types";
 import { Icon, SemanticICONS } from 'semantic-ui-react';
 
 const PatientPage = () => {
@@ -13,8 +13,8 @@ const PatientPage = () => {
   useEffect(() => {
     const getPatientData = async () => {
       try {
-        const { data: patientFromApi } = await axios.get<Patient>(`${apiBaseUrl}/patients/${id}`);
-        //dispatch({ type: "SET_PATIENT", payload: patientFromApi });
+        const { data: patientFromApi } = await axios.get<SinglePatientEntry>(`${apiBaseUrl}/patients/${id}`);
+        //console.log("PATIENT", patientFromApi);
         dispatch(setPatient(patientFromApi));
       } catch (e) {
         console.error(e);
@@ -38,6 +38,16 @@ const PatientPage = () => {
     <h2>{patient.name} <Icon name={genderIconName()} />{patient.gender}</h2>
     ssn: {patient.ssn} <br></br>
     occupation: {patient.occupation}
+    <h3>entries</h3>
+    {patient.entries 
+    ? patient.entries.map(entry => 
+      <p key={entry.id}>
+        {entry.date} <i>{entry.description}</i>
+        <ul>
+        </ul>
+      </p>)
+    : null
+  }
     </div>
   );
 };
