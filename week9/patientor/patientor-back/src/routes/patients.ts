@@ -28,6 +28,7 @@ patientRouter.get('/:id', (req, res) => {
 });
 
 patientRouter.post('/:id/entries', (req, res) => {
+  console.log("ADD ENTRY CALLED IN BACKEND", req.body)
   try {
     const newEntry = req.body;
     console.log("NEW ENTRY", newEntry)

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { apiBaseUrl } from "../constants";
-import { useStateValue, setPatient, addEntry } from "../state";
+import { useStateValue, setPatient, addEntry, setPatientEntries } from "../state";
 import { SinglePatientEntry, Entry } from "../types";
 import { Icon, SemanticICONS, Button, Divider } from 'semantic-ui-react';
 import EntryDetails from './EntryDetails';
@@ -12,7 +12,8 @@ import { EntryFormValues } from './AddEntryForm';
 
 const PatientPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [{ patient }, dispatch] = useStateValue();
+  const [{ patient, entries }, dispatch] = useStateValue();
+  console.log("ENTRIES", entries);
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
@@ -30,6 +31,7 @@ const PatientPage = () => {
         const { data: patientFromApi } = await axios.get<SinglePatientEntry>(`${apiBaseUrl}/patients/${id}`);
         //console.log("PATIENT", patientFromApi);
         dispatch(setPatient(patientFromApi));
+        dispatch(setPatientEntries(patientFromApi.entries));
       } catch (e) {
         console.error(e);
       }
@@ -40,7 +42,7 @@ const PatientPage = () => {
   const submitNewEntry = async (values: EntryFormValues) => {
     try {
       const { data: newEntry } = await axios.post<Entry>(
-        `${apiBaseUrl}/patients`,
+        `${apiBaseUrl}/patients/${id}/entries`,
         values
       );
       //dispatch({ type: "ADD_PATIENT", payload: newEntry });
@@ -78,8 +80,8 @@ const PatientPage = () => {
         onClose={closeModal}
       />
       <Divider hidden />
-      {patient.entries
-        ? patient.entries.map(entry => <div key={entry.id}><EntryDetails entry={entry} /></div>)
+      {Object.values(entries)
+        ? Object.values(entries).map(entry => <div key={entry.id}><EntryDetails entry={entry} /></div>)
         : null
       }
     </div>

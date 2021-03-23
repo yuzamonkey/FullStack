@@ -2,9 +2,17 @@ import { State } from "./state";
 import { Patient, Entry } from "../types";
 
 export const addEntry = (entry: Entry): Action => {
+  console.log("CONST ADD ENTRY CALLED", entry);
   return {
     type: "ADD_ENTRY",
     payload: entry
+  };
+};
+
+export const setPatientEntries = (entries: Entry[]): Action => {
+  return {
+    type: "SET_PATIENT_ENTRIES",
+    payload: entries
   };
 };
 
@@ -47,13 +55,29 @@ export type Action =
   | {
     type: "ADD_ENTRY";
     payload: Entry;
+  }
+  | {
+    type: "SET_PATIENT_ENTRIES";
+    payload: Entry[];
   };
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "ADD_ENTRY":
+    case "SET_PATIENT_ENTRIES": 
       return {
-        ...state //continue this
+        ...state,
+        entries: {
+          ...action.payload.reduce(
+            (memo, entry) => ({...memo, [entry.id]: entry}), 
+            {}
+          ),
+          ...state.entries
+        }
+      };
+    case "ADD_ENTRY":
+      console.log("ADD_ENTRY CALLED IN REDUCER", action.payload);
+      return {
+        ...state, ////
       };
     case "SET_PATIENT":
       return {

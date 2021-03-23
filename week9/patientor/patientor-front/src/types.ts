@@ -66,7 +66,7 @@ export interface Patient {
   gender: Gender;
   ssn?: string;
   dateOfBirth?: string;
-  entries?: Array<Entry>
+  entries: Array<Entry>
 }
 
 // Define special omit for unions

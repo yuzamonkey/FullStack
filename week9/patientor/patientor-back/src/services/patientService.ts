@@ -11,14 +11,18 @@ const getNonSensitiveEntries = (): PublicPatient[] => {
   }));
 };
 
-const findById = (id: string): PatientEntry | undefined => {
+const findById = (id: string): PatientEntry => {
   //console.log("PATIENT DATA", patientData)
   const entry = patientData.map(({ id, name, ssn, dateOfBirth, gender, occupation, entries }: PatientEntry) => ({
     id, name, ssn, dateOfBirth, gender, occupation, entries
   }));
   const patient = entry.find((p: PatientEntry) => p.id === id);
   //console.log("PATIENT BY ID", patient)
-  return patient;
+  if (patient) {
+    return patient;
+  } else {
+    return {id: "unknown", name: "unknown", ssn: "unknown", dateOfBirth: "unknown", gender: "unknown", occupation: "unknown", entries: []}
+  }
 }
 
 const addPatient = (entry: NewPatientEntry): PatientEntry => {
