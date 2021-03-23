@@ -27,5 +27,15 @@ patientRouter.get('/:id', (req, res) => {
   }
 });
 
+patientRouter.post('/:id/entries', (req, res) => {
+  try {
+    const newEntry = req.body;
+    console.log("NEW ENTRY", newEntry)
+    res.json(newEntry);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
 
 export default patientRouter;

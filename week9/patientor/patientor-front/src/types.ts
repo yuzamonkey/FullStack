@@ -24,7 +24,7 @@ export enum HealthCheckRating {
 }
 
 //Health entries
-interface BaseEntry {
+export interface BaseEntry {
   id: string;
   description: string;
   date: string;
@@ -73,3 +73,4 @@ export interface Patient {
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 // Define Entry without the 'id' property
 export type SinglePatientEntry = UnionOmit<Patient, ''>; //Why does this work?
+
