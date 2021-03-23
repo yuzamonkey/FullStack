@@ -1,6 +1,7 @@
 import express from 'express';
 import patientService from '../services/patientService'
-import { toNewPatientEntry } from '../utils'
+import { toNewPatientEntry } from '../utils/newPatientEntryValidations'
+import { toNewEntry } from '../utils/newEntryValidations'
 
 const patientRouter = express.Router();
 
@@ -30,7 +31,7 @@ patientRouter.get('/:id', (req, res) => {
 patientRouter.post('/:id/entries', (req, res) => {
   console.log("ADD ENTRY CALLED IN BACKEND", req.body)
   try {
-    const newEntry = req.body;
+    const newEntry = toNewEntry(req.body);
     console.log("NEW ENTRY", newEntry)
     res.json(newEntry);
   } catch (e) {

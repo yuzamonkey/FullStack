@@ -13,7 +13,6 @@ import { EntryFormValues } from './AddEntryForm';
 const PatientPage = () => {
   const { id } = useParams<{ id: string }>();
   const [{ patient, entries }, dispatch] = useStateValue();
-  console.log("ENTRIES", entries);
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
