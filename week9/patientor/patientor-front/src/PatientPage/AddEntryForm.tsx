@@ -42,7 +42,8 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         description: "",
         date: "",
         specialist: "",
-        diagnosisCodes: []
+        diagnosisCodes: [],
+        healthCheckRating: 0
       }}
       onSubmit={onSubmit}
       validate={values => {
@@ -54,8 +55,21 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.date) {
           errors.date = requiredError;
         }
+        if (!isString(values.date) || !isDate(values.date)) {
+          errors.date = 'Give date in format YYYY-MM-DD or DD.MM.YYYY';
+        }
         if (!values.specialist) {
           errors.specialist = requiredError;
+        }
+        if (!isString(values.specialist)) {
+          errors.specialist = 'Give proper specialist';
+        }
+        if (!values.healthCheckRating) {
+          errors.healthCheckRating = requiredError;
+        }
+        if (values.healthCheckRating < 0 || values.healthCheckRating > 3) {
+          errors.healthCheckRating = 'Rating must be between 0 and 3';
+          values.healthCheckRating = 0;
         }
         return errors;
       }}
@@ -115,6 +129,16 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
       }}
     </Formik>
   );
+};
+
+
+
+const isString = (a: unknown): a is string => {
+  return typeof a === 'string' || a instanceof String;
+};
+
+const isDate = (d: string): boolean => {
+  return Boolean(Date.parse(d));
 };
 
 export default AddEntryForm;
