@@ -35,6 +35,17 @@ export const AddHealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
     };
     void getDiagnoseCodes();
   }, []);
+ 
+/*
+  id: string;
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCodes?: Array<DiagnoseEntry['code']>;
+
+  type: "HealthCheck";
+  healthCheckRating: HealthCheckRating;
+*/
 
   return (
     <Formik

@@ -26,13 +26,13 @@ const PatientPage = () => {
   const [healthcheckModalOpen, setHealthcheckModalOpen] = React.useState<boolean>(false);
   const [hospitalModalOpen, setHospitalModalOpen] = React.useState<boolean>(false);
   const [ohcModalOpen, setOHCModalOpen] = React.useState<boolean>(false);
-  
+
   const [error, setError] = React.useState<string | undefined>();
-  
+
   const openHealthcheckModal = (): void => setHealthcheckModalOpen(true);
   const openHospitalModal = (): void => setHospitalModalOpen(true);
   const openOHCModal = (): void => setOHCModalOpen(true);
-  
+
   const closeHealthcheckModal = (): void => {
     setHealthcheckModalOpen(false);
     setError(undefined);
@@ -66,7 +66,6 @@ const PatientPage = () => {
         `${apiBaseUrl}/patients/${id}/entries`,
         values
       );
-      //dispatch({ type: "ADD_PATIENT", payload: newEntry });
       dispatch(addEntry(newEntry));
       closeHealthcheckModal();
       closeHospitalModal();
@@ -87,7 +86,6 @@ const PatientPage = () => {
         return "genderless";
     }
   };
-
 
   return (
     <div>
