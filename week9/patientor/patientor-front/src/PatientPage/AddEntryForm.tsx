@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
-import { TextField, SelectField } from "./EntryFormField";
+import { TextField, DiagnosisSelection } from "./EntryFormField";
 import { Diagnosis, BaseEntry } from "../types";
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
@@ -19,11 +19,10 @@ export type DiagnosisCodesOption = {
   label: string;
 };
 
-// const diagnosisOptions: DiagnosisCodesOption[] = [
-//   { value: {name: "abc", code: "def"}, label: "Diagnosis" },
-// ];
-
 export const AddEntryForm = ({ onSubmit, onCancel } : Props ) => {
+  const [, setFieldValue] = React.useState('');
+  const [, setFieldTouched] = React.useState('');
+
   const [diagnoses, setDiagnoses] = React.useState<Diagnosis[]>([]);
   React.useEffect(() => {
     const getDiagnoseCodes = async () => {
@@ -36,20 +35,6 @@ export const AddEntryForm = ({ onSubmit, onCancel } : Props ) => {
     };
     void getDiagnoseCodes();
   }, []);
-
-  const diagnosisOptions: DiagnosisCodesOption[] = diagnoses.map(diagnose => {
-    const name = diagnose.name;
-    const code = diagnose.code;
-    const diagnoseObject = {
-      value: {name: name, code: code}, label: name
-    };
-    return diagnoseObject;
-  });
-  /*
-  [
-    { value: {name: "abc", code: "def"}, label: "Diagnosis" },
-  ];
-*/
 
   return (
     <Formik
@@ -96,10 +81,10 @@ export const AddEntryForm = ({ onSubmit, onCancel } : Props ) => {
               name="specialist"
               component={TextField}
             />
-            <SelectField
-              label="Diagnosis"
-              name="diagnosisCodes"
-              options={diagnosisOptions}
+            <DiagnosisSelection 
+              diagnoses={diagnoses}
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
             />
             <Grid>
               <Grid.Column floated="left" width={5}>
