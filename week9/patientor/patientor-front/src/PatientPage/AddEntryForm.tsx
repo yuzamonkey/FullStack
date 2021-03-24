@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
-import { TextField, DiagnosisSelection } from "./EntryFormField";
+import { TextField, DiagnosisSelection, NumberField } from "./EntryFormField";
 import { Diagnosis, BaseEntry } from "../types";
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
@@ -19,7 +19,7 @@ export type DiagnosisCodesOption = {
   label: string;
 };
 
-export const AddEntryForm = ({ onSubmit, onCancel } : Props ) => {
+export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [, setFieldValue] = React.useState('');
   const [, setFieldTouched] = React.useState('');
 
@@ -81,10 +81,17 @@ export const AddEntryForm = ({ onSubmit, onCancel } : Props ) => {
               name="specialist"
               component={TextField}
             />
-            <DiagnosisSelection 
+            <DiagnosisSelection
               diagnoses={diagnoses}
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
+            />
+            <Field
+              label="healthCheckRating"
+              name="healthCheckRating"
+              component={NumberField}
+              min={0}
+              max={3}
             />
             <Grid>
               <Grid.Column floated="left" width={5}>
