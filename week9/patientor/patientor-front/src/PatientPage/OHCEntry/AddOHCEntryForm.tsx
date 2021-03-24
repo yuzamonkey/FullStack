@@ -3,11 +3,11 @@ import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
 import { TextField, DiagnosisSelection } from "./OHCFormField";
-import { Diagnosis, BaseEntry } from "../../types";
+import { Diagnosis, OccupationalHealthcareEntry } from "../../types";
 import axios from "axios";
 import { apiBaseUrl } from "../../constants";
 
-export type OHCEntryFormValues = Omit<BaseEntry, 'id'>;
+export type OHCEntryFormValues = Omit<OccupationalHealthcareEntry, 'id'>;
 
 interface Props {
   onSubmit: (values: OHCEntryFormValues) => void;
@@ -39,13 +39,13 @@ export const AddOHCEntryForm = ({ onSubmit, onCancel }: Props) => {
   return (
     <Formik
       initialValues={{
+        type: 'OccupationalHealthcare',
         description: "",
         date: "",
         specialist: "",
         diagnosisCodes: [],
         employerName: "",
-        sickLeaveStart: "",
-        sickLeaveEnd: ""
+        sickLeave: {startDate: "", endDate: ""}
       }}
       onSubmit={onSubmit}
       validate={values => {
@@ -69,11 +69,11 @@ export const AddOHCEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.employerName) {
           errors.empployerName = requiredError;
         }
-        if (!isDate(values.sickLeaveStart)) {
-          errors.sickLeaveStart = 'Give date in format YYYY-MM-DD or DD.MM.YYYY';
+        if (values.sickLeave?.startDate != undefined && !isDate(values.sickLeave?.startDate)) {
+          errors.sickLeaveStart = 'Give start date in format YYYY-MM-DD or DD.MM.YYYY';
         }
-        if (!isDate(values.sickLeaveEnd)) {
-          errors.sickLeaveEnd = 'Give date in format YYYY-MM-DD or DD.MM.YYYY';
+        if (values.sickLeave?.endDate != undefined && !isDate(values.sickLeave?.endDate)) {
+          errors.sickLeaveEnd = 'Give end date in format YYYY-MM-DD or DD.MM.YYYY';
         }
         return errors;
       }}

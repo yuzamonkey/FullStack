@@ -61,10 +61,10 @@ const PatientPage = () => {
   }, [dispatch]);
 
   const submitNewEntry = async (values: EntryFormValues) => {
+    console.log("SUBMIT ENTRY VALUES", values);
     try {
       const { data: newEntry } = await axios.post<Entry>(
-        `${apiBaseUrl}/patients/${id}/entries`,
-        values
+        `${apiBaseUrl}/patients/${id}/entries`, values
       );
       dispatch(addEntry(newEntry));
       closeHealthcheckModal();

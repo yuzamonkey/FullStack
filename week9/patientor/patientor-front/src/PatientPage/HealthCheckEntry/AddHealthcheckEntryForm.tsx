@@ -20,8 +20,22 @@ export type DiagnosisCodesOption = {
 };
 
 export const AddHealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
-  const [, setFieldValue] = React.useState('');
-  const [, setFieldTouched] = React.useState('');
+  // const [, setFieldValue] = React.useState('');
+  // const [, setFieldTouched] = React.useState('');
+
+  const setFieldValue = (field: string, value: any, shouldValidate?: boolean | undefined) => {
+    console.log("SET FIELD VALUE");
+    console.log("FIELD", field);
+    console.log("VALUE", value);
+    console.log("SHOULD VALIDATE", shouldValidate);
+  };
+
+  const setFieldTouched = (field: string, isTouched?: boolean | undefined, shouldValidate?: boolean | undefined) => {
+    console.log("SET FIELD TOUCHED");
+    console.log("FIELD", field);
+    console.log("ISTOUCHED", isTouched);
+    console.log("SHOULD VALIDATE", shouldValidate);
+  };
 
   const [diagnoses, setDiagnoses] = React.useState<Diagnosis[]>([]);
   React.useEffect(() => {
@@ -35,17 +49,6 @@ export const AddHealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
     };
     void getDiagnoseCodes();
   }, []);
- 
-/*
-  id: string;
-  description: string;
-  date: string;
-  specialist: string;
-  diagnosisCodes?: Array<DiagnoseEntry['code']>;
-
-  type: "HealthCheck";
-  healthCheckRating: HealthCheckRating;
-*/
 
   return (
     <Formik
@@ -82,6 +85,7 @@ export const AddHealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
           errors.healthCheckRating = 'Rating must be between 0 and 3';
           values.healthCheckRating = 0;
         }
+        
         return errors;
       }}
     >
