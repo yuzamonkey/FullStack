@@ -2,15 +2,15 @@ import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
-import { TextField, DiagnosisSelection, NumberField } from "./EntryFormField";
-import { Diagnosis, BaseEntry } from "../types";
+import { TextField, DiagnosisSelection, NumberField } from "./HealthcheckEntryFormField";
+import { Diagnosis, BaseEntry } from "../../types";
 import axios from "axios";
-import { apiBaseUrl } from "../constants";
+import { apiBaseUrl } from "../../constants";
 
-export type EntryFormValues = Omit<BaseEntry, 'id'>;
+export type HealthcheckEntryFormValues = Omit<BaseEntry, 'id'>;
 
 interface Props {
-  onSubmit: (values: EntryFormValues) => void;
+  onSubmit: (values: HealthcheckEntryFormValues) => void;
   onCancel: () => void;
 }
 
@@ -19,7 +19,7 @@ export type DiagnosisCodesOption = {
   label: string;
 };
 
-export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
+export const AddHealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [, setFieldValue] = React.useState('');
   const [, setFieldTouched] = React.useState('');
 
@@ -141,4 +141,4 @@ const isDate = (d: string): boolean => {
   return Boolean(Date.parse(d));
 };
 
-export default AddEntryForm;
+export default AddHealthcheckEntryForm;

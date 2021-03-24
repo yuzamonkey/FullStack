@@ -1,7 +1,7 @@
 import React from "react";
 import { ErrorMessage, Field, FieldProps, FormikProps } from "formik";
 import { Dropdown, DropdownProps, Form } from "semantic-ui-react";
-import { Diagnosis } from "../types";
+import { Diagnosis } from "../../types";
 
 // structure of a single option
 export type DiagnosisCodesOption = {
@@ -52,9 +52,6 @@ export const TextField= ({
   </Form.Field>
 );
 
-/*
-  for exercises 9.24.-
-*/
 interface NumberProps extends FieldProps {
   label: string;
   errorMessage?: string;
