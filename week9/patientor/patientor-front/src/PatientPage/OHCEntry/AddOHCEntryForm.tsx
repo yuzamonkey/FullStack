@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
-import { TextField, DiagnosisSelection, NumberField } from "./OHCFormField";
+import { TextField, DiagnosisSelection } from "./OHCFormField";
 import { Diagnosis, BaseEntry } from "../../types";
 import axios from "axios";
 import { apiBaseUrl } from "../../constants";
@@ -43,7 +43,9 @@ export const AddOHCEntryForm = ({ onSubmit, onCancel }: Props) => {
         date: "",
         specialist: "",
         diagnosisCodes: [],
-        healthCheckRating: 0
+        employerName: "",
+        sickLeaveStart: "",
+        sickLeaveEnd: ""
       }}
       onSubmit={onSubmit}
       validate={values => {
@@ -64,12 +66,14 @@ export const AddOHCEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (!isString(values.specialist)) {
           errors.specialist = 'Give proper specialist';
         }
-        if (!values.healthCheckRating) {
-          errors.healthCheckRating = requiredError;
+        if (!values.employerName) {
+          errors.empployerName = requiredError;
         }
-        if (values.healthCheckRating < 0 || values.healthCheckRating > 3) {
-          errors.healthCheckRating = 'Rating must be between 0 and 3';
-          values.healthCheckRating = 0;
+        if (!isDate(values.sickLeaveStart)) {
+          errors.sickLeaveStart = 'Give date in format YYYY-MM-DD or DD.MM.YYYY';
+        }
+        if (!isDate(values.sickLeaveEnd)) {
+          errors.sickLeaveEnd = 'Give date in format YYYY-MM-DD or DD.MM.YYYY';
         }
         return errors;
       }}
@@ -101,11 +105,16 @@ export const AddOHCEntryForm = ({ onSubmit, onCancel }: Props) => {
               setFieldTouched={setFieldTouched}
             />
             <Field
-              label="healthCheckRating"
-              name="healthCheckRating"
-              component={NumberField}
-              min={0}
-              max={3}
+              label="Sick leave start date"
+              placeholder="YYYY-MM-DD"
+              name="sickLeaveStart"
+              component={TextField}
+            />
+            <Field
+              label="Sick leave end date"
+              placeholder="YYYY-MM-DD"
+              name="sickLeaveEnd"
+              component={TextField}
             />
             <Grid>
               <Grid.Column floated="left" width={5}>
