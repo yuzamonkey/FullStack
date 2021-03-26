@@ -18,7 +18,7 @@ try {
     throw new Error("Height or weight was not given or not a number");
   }
   console.log(calculateBmi(height, weight));
-} catch (e) {
-  console.log("ERROR:", e.message);
+} catch (e: unknown) {
+  console.log({ error: (e as Error).message });
 }
 

@@ -54,6 +54,6 @@ try {
     }
   }
   console.log(calculate(hours, target));
-} catch (e) {
-  console.log("ERROR:", e.message);
+} catch (e: unknown) {
+  console.log({ error: (e as Error).message });
 }

@@ -21,13 +21,14 @@ app.get('/bmi', (req, res) => {
       bmi: calculateBmi(height, weight)
     };
     res.send(responseObject);
-  } catch (e) {
-    res.send({ error: e.message });
+  } catch (e: unknown) {
+    res.send({ error: (e as Error).message });
   }
 });
 
 app.post('/exercise', (req, res) => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { daily_exercises, target } = req.body;
     if (!daily_exercises || !target || isNaN(target)) {
       throw new Error("parameters missing or invalid");
@@ -38,8 +39,8 @@ app.post('/exercise', (req, res) => {
       }
     }
     res.send(calculate(daily_exercises, target));
-  } catch (e) {
-    res.send({ error: e.message });
+  } catch (e: unknown) {
+    res.send({ error: (e as Error).message });
   }
 });
 
