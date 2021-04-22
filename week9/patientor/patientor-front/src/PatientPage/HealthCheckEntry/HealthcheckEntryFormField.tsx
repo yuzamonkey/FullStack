@@ -70,22 +70,16 @@ export const NumberField = ({ field, label, min, max }: NumberProps) => (
   </Form.Field>
 );
 
-export const DiagnosisSelection = (
-  {
-    diagnoses, setFieldValue, setFieldTouched
-  }: {
-    diagnoses: Diagnosis[];
-    setFieldValue: FormikProps<{ diagnosisCodes: string[] }>["setFieldValue"];
-    setFieldTouched: FormikProps<{ diagnosisCodes: string[] }>["setFieldTouched"];
-  }) => {
+export const DiagnosisSelection = ({ 
+  diagnoses,
+  setFieldValue, 
+  setFieldTouched 
+}: {
+  diagnoses: Diagnosis[];
+  setFieldValue: FormikProps<{ diagnosisCodes: string[] }>["setFieldValue"];
+  setFieldTouched: FormikProps<{ diagnosisCodes: string[] }>["setFieldTouched"];
+}) => {
   const field = "diagnosisCodes";
-  const onChange = (
-    _event: React.SyntheticEvent<HTMLElement, Event>,
-    data: DropdownProps
-  ) => {
-    setFieldTouched(field, true);
-    setFieldValue(field, data.value);
-  };
 
   const stateOptions = diagnoses.map(diagnosis => ({
     key: diagnosis.code,
@@ -102,7 +96,10 @@ export const DiagnosisSelection = (
         search
         selection
         options={stateOptions}
-        onChange={onChange}
+        onChange={(_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+          setFieldTouched(field, true);
+          setFieldValue(field, data.value);
+        }}
       />
       <ErrorMessage name={field} />
     </Form.Field>

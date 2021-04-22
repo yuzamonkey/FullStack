@@ -20,8 +20,6 @@ export type DiagnosisCodesOption = {
 };
 
 export const AddHealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
-  // const [, setFieldValue] = React.useState('');
-  // const [, setFieldTouched] = React.useState('');
 
   const setFieldValue = (field: string, value: any, shouldValidate?: boolean | undefined) => {
     console.log("SET FIELD VALUE");
@@ -30,12 +28,12 @@ export const AddHealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
     console.log("SHOULD VALIDATE", shouldValidate);
   };
 
-  const setFieldTouched = (field: string, isTouched?: boolean | undefined, shouldValidate?: boolean | undefined) => {
+  /*const setFieldTouched = (field: string, isTouched?: boolean | undefined, shouldValidate?: boolean | undefined) => {
     console.log("SET FIELD TOUCHED");
     console.log("FIELD", field);
     console.log("ISTOUCHED", isTouched);
     console.log("SHOULD VALIDATE", shouldValidate);
-  };
+  };*/
 
   const [diagnoses, setDiagnoses] = React.useState<Diagnosis[]>([]);
   React.useEffect(() => {
@@ -56,10 +54,16 @@ export const AddHealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
         description: "",
         date: "",
         specialist: "",
-        diagnosisCodes: [],
+        diagnosisCodes: [{
+          key: 'M24.2',
+          text: 'foobarM24.2',
+          value: 'M24.2'
+        }],
         healthCheckRating: 0
       }}
-      onSubmit={onSubmit}
+      onSubmit={(formValuesWithoutDiagnoses: any) => {
+        console.log('FORMIK SENT SUBMIT EVENT with data:', formValuesWithoutDiagnoses);
+      }}
       validate={values => {
         const requiredError = "Field is required";
         const errors: { [field: string]: string } = {};
@@ -85,7 +89,6 @@ export const AddHealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
           errors.healthCheckRating = 'Rating must be between 0 and 3';
           values.healthCheckRating = 0;
         }
-        
         return errors;
       }}
     >
@@ -113,7 +116,7 @@ export const AddHealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
             <DiagnosisSelection
               diagnoses={diagnoses}
               setFieldValue={setFieldValue}
-              setFieldTouched={setFieldTouched}
+              setFieldTouched={() => {console.log('');}}
             />
             <Field
               label="healthCheckRating"
